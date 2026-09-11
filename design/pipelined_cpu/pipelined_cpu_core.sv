@@ -12,6 +12,7 @@ module pipelined_cpu_core (
     output logic [31:0] data_write_data,
     output logic data_write_enable,
     output logic [31:0] data_address,
+    output logic [31:0] data_read_address,
 
     // Instruction Memory
     input  logic [31:0] instruction_data,
@@ -366,6 +367,7 @@ execute_memory_reg execute_memory_pipeline_reg (
 assign data_address = alu_result_memory;
 assign data_write_data = read_reg2_memory;
 assign data_write_enable = mem_write_memory;
+assign data_read_address = alu_result_execute;
 
 
 

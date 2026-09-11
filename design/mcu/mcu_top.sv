@@ -25,8 +25,8 @@ module mcu_top (
 
 wire data_write_enable;
 wire [31:0] data_address;
+wire [31:0] data_read_address;
 wire [31:0] data_write_data;
-
 logic [31:0] data_read_data;
 logic [31:0] instruction_address;
 logic [31:0] instruction_data;
@@ -68,6 +68,7 @@ pipelined_cpu_core cpu (
     .reset(reset),
     .data_write_enable(data_write_enable),
     .data_address(data_address),
+    .data_read_address(data_read_address),
     .data_write_data(data_write_data),
     .data_read_data(data_read_data),
     .instruction_address(instruction_address),
@@ -81,7 +82,8 @@ pipelined_cpu_core cpu (
 data_mem data_memory (
     .clk(clk),
     .mem_write(memory_write_enable),
-    .address(memory_address),
+    .read_address(data_read_address),
+    .write_address(memory_address),
     .write_data(memory_write_data),
     .read_data(memory_read_data)
 );

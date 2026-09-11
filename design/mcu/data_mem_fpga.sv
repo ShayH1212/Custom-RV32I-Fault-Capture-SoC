@@ -14,14 +14,16 @@ read_data : value stores at an address
 module data_mem (
     input  logic clk,
     input  logic mem_write,
-    input  logic [31:0] write_data,
-    output logic [31:0] read_data,
     input logic [31:0] read_address,
-    input logic [31:0] write_address
+    input logic [31:0] write_address,
+    input logic [31:0] write_data,
+    output logic [31:0] read_data
 );
 
-always_ff @(posedge clk) begin
+logic [31:0] memory [0:511];
 
+
+always_ff @(posedge clk) begin
     if (mem_write) begin
 
         memory[write_address[10:2]] <= write_data;
@@ -31,14 +33,4 @@ always_ff @(posedge clk) begin
     read_data <= memory[read_address[10:2]];
 
 end
-
-logic [31:0] memory [0:511];
-
-assign read_data = memory[address[10:2]]; // always display the contents of the selected address
-
-always_ff @(posedge clk) begin // on the rising edge of the clock
-    if (mem_write) // as long as we want to write data
-        memory[address[10:2]] <= write_data; // then change the spot in memory to the data to be written
-end
-
 endmodule
