@@ -40,19 +40,19 @@ the cpu_interrupt signal.
 
 0x0 — INTERRUPT_ENABLE
 
-- Bit 0 — Timer interrupt enable
-- Bit 1 — UART interrupt enable
-- Bit 2 — GPIO interrupt enable
-- Bit 3 — SPI interrupt enable
-- Bit 4 — I2C interrupt enable
+- Bit 0: Timer interrupt enable
+- Bit 1: UART interrupt enable
+- Bit 2: GPIO interrupt enable
+- Bit 3: SPI interrupt enable
+- Bit 4: I2C interrupt enable
 
 0x4 — INTERRUPT_PENDING
 
-- Bit 0 — Timer interrupt pending
-- Bit 1 — UART interrupt pending
-- Bit 2 — GPIO interrupt pending
-- Bit 3 — SPI interrupt pending
-- Bit 4 — I2C interrupt pending
+- Bit 0: Timer interrupt pending
+- Bit 1: UART interrupt pending
+- Bit 2: GPIO interrupt pending
+- Bit 3: SPI interrupt pending
+- Bit 4: I2C interrupt pending
 
 0x8 — INTERRUPT_CLEAR
 
