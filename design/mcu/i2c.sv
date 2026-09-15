@@ -1,89 +1,52 @@
-/*|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 I2C Master
 
-This module allows the MCU to communicate with external devices using
-I2C (Inter-Integrated Circuit).
+This module allows the MCU to communicate with external devices using I2C (Inter-Integrated Circuit).
 
 I2C uses two main signals:
 
     SCL = Serial Clock: Controls the timing of I2C communication.
-
     SDA = Serial Data: Bidirectional line used to transmit and receive data.
 
 Unlike SPI, multiple I2C devices can share the same SCL and SDA lines.
 Each device is identified using an address.
 
-This module operates as the I2C master. The MCU controls when a transaction
-begins and the I2C module generates the required clock and data signals.
+This module operates as the I2C master. 
+The MCU controls when a transaction begins and the I2C module generates the necessary clock and data signals.
 
 
 Design Choices:
 
-1. 7 Bit Device Addressing
-   External I2C devices are selected using a 7 bit device address.
-   The read/write bit is added to the address when a transaction begins.
-
-2. Single Byte Transactions
-   Each transaction transfers one 8 bit data byte.
-   Multi byte transfers are not supported in this version.
-
-3. Single I2C Master
+1. Single I2C Master
    The MCU is the only master allowed to control the I2C bus.
-   Multi master arbitration is not implemented.
 
-4. Open Drain SCL and SDA
-   The MCU only pulls SCL and SDA LOW or releases them.
-   External pull up resistors make the lines HIGH when they are released.
-
-5. Parameterized I2C Clock
-   I2C_FREQUENCY determines the target I2C clock frequency and defaults to 100 kHz.
-   The timing is generated using the faster MCU clock.
-
-6. MSB First Transmission
+2. MSB First Transmission
    Address and data bytes are transmitted starting with bit 7 and ending with bit 0.
    This follows standard I2C transmission ordering.
 
-7. Hardware Generated START and STOP
-   The FSM generates the required START condition before communication and
-   the STOP condition when the transaction is complete.
+3. Hardware Generated START and STOP
+   The FSM generates the required START condition before communication and the STOP condition when the transaction is done.
 
-8. ACK and NACK Detection
+4. ACK and NACK Detection
    The external device must pull SDA LOW to acknowledge an address or written byte.
    If SDA remains HIGH, the ack_error flag is set.
 
-9. Separate Read and Write Paths
+5. Separate Read and Write Paths
    The read/write bit determines whether the FSM sends a data byte or receives one.
    Both operations use the same address and control interface.
 
-10. Single Byte TX and RX Storage
-    tx_data_register stores one byte for transmission and rx_data_register stores
-    the most recently received byte. No TX or RX FIFO is used.
+6. FSM Controlled Transactions
+    The controller uses separate states for each section.
 
-11. FSM Controlled Transactions
-    The controller uses separate states for START, address transfer, acknowledgment,
-    data transfer, NACK, STOP, and IDLE operation.
-
-12. Single Byte Reads End With NACK
-    After receiving one byte, the MCU sends a NACK to indicate that no additional
-    bytes are required before generating the STOP condition.
-
-13. No Clock Stretching
+7. No Clock Stretching
     The master does not wait if an external device holds SCL LOW.
-    Clock stretching is not supported in this version.
+    Clock stretching is not supported.
 
-14. CPU Starts Transactions Through I2C_CONTROL
+8. CPU Starts Transactions Through I2C_CONTROL
     Writing a 1 to bit 0 of I2C_CONTROL begins a transaction.
     Bit 1 selects whether the transaction is a read or write.
 
-15. Transfer Complete and ACK Error Flags
-    transfer_complete records that the transaction finished and ack_error records
-    that an expected acknowledgment was not received.
-
-16. Write 1 to Clear Status Flags
-    Writing a 1 to bit 1 or bit 2 of I2C_STATUS clears transfer_complete or
-    ack_error respectively.
-
-17. Transfer Complete Interrupt
+9. Transfer Complete Interrupt
     i2c_interrupt is connected to transfer_complete and becomes active when
     an I2C transaction has finished.
 
@@ -93,7 +56,6 @@ Register Map:
     0x0 = I2C_DATA
 
           Writing: Stores the byte that will be transmitted.
-
           Reading: Returns the most recently received byte.
 
 
@@ -120,7 +82,7 @@ Register Map:
           Writing a 1 to bit 1 clears transfer complete.
           Writing a 1 to bit 2 clears ACK error.
 
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 
 module i2c_master #(
@@ -130,7 +92,6 @@ module i2c_master #(
 
 )
 (
-
     input logic clk,
     input logic reset,
     input logic [31:0] address,
@@ -141,16 +102,11 @@ module i2c_master #(
     // I2C signals
     inout wire i2c_scl,
     inout wire i2c_sda,
-
     output logic i2c_interrupt
-
 );
 
-
 // Number of MCU clock cycles for half of one I2C clock period
-localparam integer HALF_PERIOD_COUNT =
-    CLOCK_FREQUENCY / (I2C_FREQUENCY * 2);
-
+localparam integer HALF_PERIOD_COUNT = CLOCK_FREQUENCY / (I2C_FREQUENCY * 2);
 
 // I2C states
 localparam logic [3:0] I2C_IDLE = 4'b0000;
@@ -162,7 +118,6 @@ localparam logic [3:0] I2C_WRITE_ACK = 4'b0101;
 localparam logic [3:0] I2C_READ_DATA = 4'b0110;
 localparam logic [3:0] I2C_READ_NACK = 4'b0111;
 localparam logic [3:0] I2C_STOP = 4'b1000;
-
 
 // Internal registers
 logic [3:0] i2c_state;
@@ -187,14 +142,15 @@ logic i2c_busy;
 logic transfer_complete;
 logic ack_error;
 
-
 // Open drain control signals
 logic scl_drive_low;
 logic sda_drive_low;
 
-
 // Indicates that half of one I2C clock period has passed
 logic half_period_done;
+
+logic scl_output;
+logic sda_output;
 
 assign half_period_done =
     (clock_counter == HALF_PERIOD_COUNT - 1);
@@ -208,9 +164,26 @@ The MCU can pull each line LOW or release it.
 External pull up resistors make the lines HIGH when released.
 **************************************************************/
 
-assign i2c_scl = scl_drive_low ? 1'b0 : 1'bz;
+always_comb begin
 
-assign i2c_sda = sda_drive_low ? 1'b0 : 1'bz;
+    if (scl_drive_low == 1'b1) begin
+        scl_output = 1'b0;
+    end
+    else begin
+        scl_output = 1'bz;
+    end
+
+    if (sda_drive_low == 1'b1) begin
+        sda_output = 1'b0;
+    end
+    else begin
+        sda_output = 1'bz;
+    end
+
+end
+
+assign i2c_scl = scl_output;
+assign i2c_sda = sda_output;
 
 
 
@@ -229,49 +202,47 @@ I2C Master FSM
 
 The I2C controller moves through the following states:
 
-    I2C_IDLE
+    I2C_IDLE:
 
     Waits for the CPU to request an I2C transaction.
 
 
-    I2C_START
+    I2C_START:
 
     Generates the START condition by pulling SDA LOW while SCL is HIGH.
 
 
-    I2C_ADDRESS
+    I2C_ADDRESS:
 
     Sends the 7 bit device address followed by the read/write bit.
 
 
-    I2C_ADDRESS_ACK
+    I2C_ADDRESS_ACK:
 
-    Releases SDA and checks whether the external device acknowledged
-    the address.
+    Releases SDA and checks whether the external device acknowledged the address.
 
 
-    I2C_WRITE_DATA
+    I2C_WRITE_DATA:
 
     Sends one 8 bit data byte to the external device.
 
 
-    I2C_WRITE_ACK
+    I2C_WRITE_ACK:
 
     Checks whether the external device acknowledged the transmitted byte.
 
 
-    I2C_READ_DATA
+    I2C_READ_DATA:
 
     Receives one 8 bit data byte from the external device.
 
 
-    I2C_READ_NACK
+    I2C_READ_NACK:
 
-    Sends a NACK after receiving the byte to indicate that no additional
-    bytes are required.
+    Sends a NACK after receiving the byte to indicate that no additional bytes are required.
 
 
-    I2C_STOP
+    I2C_STOP:
 
     Generates the STOP condition and completes the transaction.
 
@@ -506,7 +477,6 @@ always_ff @(posedge clk) begin
             end
 
 
-
             if (half_period_done) begin
 
                 clock_counter <= 0;
@@ -564,12 +534,11 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
+        /*************************************************************************
         I2C ADDRESS ACK
 
-        Release SDA and check whether the selected device acknowledged
-        the address.
-        ******************************************************************/
+        Release SDA and check whether the selected device acknowledged the address.
+        ************************************************************************/
 
         else if (i2c_state == I2C_ADDRESS_ACK) begin
 

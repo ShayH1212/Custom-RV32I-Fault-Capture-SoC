@@ -11,8 +11,7 @@ The interrupt controller records these requests, determines which interrupts
 are enabled, and raises cpu_interrupt when an enabled interrupt is pending.
 
 
-Interrupt Mapping:
-
+Interrupt Map:
     Bit 0 = Timer
     Bit 1 = GPIO
     Bit 2 = SPI
@@ -30,8 +29,7 @@ Design Choices:
    The enable register only determines whether the event is allowed to interrupt the CPU.
 
 3. Level Sensitive Interrupt Inputs
-   A peripheral interrupt is considered active whenever its interrupt signal
-   is high. 
+   A peripheral interrupt is considered active whenever its interrupt signal is high. 
    If the source remains high after being cleared, it becomes pending again.
 
 4. New Interrupt Wins Over Clear
@@ -49,8 +47,7 @@ Design Choices:
    The controller outputs the ID of the highest priority enabled pending allowing the CPU can quickly determine which source to  service.
 
 8. No Global Interrupt Enable
-   Individual interrupt enables are controlled here. Global interrupt control
-   will eventually be handled by the RISC V CPU through its CSR logic.
+   Individual interrupt enables are controlled here. 
 
 Register Map:
 
@@ -61,14 +58,12 @@ Register Map:
           Bit 3 = I2C interrupt enable
           Bit 4 = UART interrupt enable
 
-
     0x4 = INTERRUPT_PENDING
           Bit 0 = Timer interrupt pending
           Bit 1 = GPIO interrupt pending
           Bit 2 = SPI interrupt pending
           Bit 3 = I2C interrupt pending
           Bit 4 = UART interrupt pending
-
 
     0x8 = INTERRUPT_CLEAR
           Writing a 1 to a bit clears the corresponding pending interrupt.
@@ -145,7 +140,7 @@ always_comb begin
     interrupt_clear_mask = 5'b0;
 
     if (write_enable && address[3:0] == 4'b1000) begin
-interrupt_clear_mask = write_data[4:0];
+    interrupt_clear_mask = write_data[4:0];
     end
 
 end
@@ -181,7 +176,6 @@ always_ff @(posedge clk) begin
 end
 
 
-
 /**********************************************************************
 Interrupt Enable Register
 
@@ -205,7 +199,6 @@ always_ff @(posedge clk) begin
     end
 
 end
-
 
 
 /***************************************

@@ -4,14 +4,11 @@ Timer
 This module provides a hardware timer for the MCU.
 
 The timer uses the MCU clock to increment a counter independently of the CPU.
-The CPU can read the current timer value and configure a compare value that
-determines when a timer event should occur.
+The CPU can read the current timer value and configure a compare value that will determine when a timer event should occur.
 
-When the counter reaches the programmed compare value, the timer sets an
-event flag and resets the counter so that another timing period can begin.
+When the counter reaches the compare value, the timer sets a flag and resets the counter so that another timer can start.
 
-The CPU can enable or disable the timer and can enable or disable timer
-interrupts.
+The CPU can enable or disable the timer and can enable or disable timer interrupts.
 
 Register Map:
 
@@ -29,7 +26,6 @@ Register Map:
     0xC = TIMER_STATUS
           Bit 0 = Timer event occurred
 
-          Writing a 1 to bit 0 clears the event flag.
 */
 
 
@@ -45,18 +41,15 @@ module timer (
 
 
 // Timer registers
-
 logic [31:0] count_register;
 logic [31:0] compare_register;
 
 logic timer_enable;
 logic interrupt_enable;
-
 logic timer_event;
 
 
 // Interrupt is active when an event has occurred and interrupts are enabled
-
 assign timer_interrupt = timer_event && interrupt_enable;
 
 

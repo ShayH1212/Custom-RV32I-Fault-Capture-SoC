@@ -1,0 +1,1145 @@
+Analysis & Synthesis report for mcu_top
+Thu Sep 10 17:47:57 2026
+Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 SC Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Analysis & Synthesis RAM Summary
+  9. State Machine - |mcu_top|i2c_master:i2c_module|i2c_state
+ 10. State Machine - |mcu_top|spi_master:spi_module|spi_state
+ 11. State Machine - |mcu_top|uart:uart_module|rx_state
+ 12. State Machine - |mcu_top|uart:uart_module|tx_state
+ 13. Registers Removed During Synthesis
+ 14. Removed Registers Triggering Further Register Optimizations
+ 15. General Register Statistics
+ 16. Registers Packed Into Inferred Megafunctions
+ 17. Registers Added for RAM Pass-Through Logic
+ 18. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 19. Source assignments for data_mem:data_memory|altsyncram:memory_rtl_0|altsyncram_c6n1:auto_generated
+ 20. Source assignments for pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0|altsyncram_6ji1:auto_generated
+ 21. Source assignments for pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1|altsyncram_6ji1:auto_generated
+ 22. Parameter Settings for User Entity Instance: uart:uart_module
+ 23. Parameter Settings for User Entity Instance: spi_master:spi_module
+ 24. Parameter Settings for User Entity Instance: i2c_master:i2c_module
+ 25. Parameter Settings for Inferred Entity Instance: data_mem:data_memory|altsyncram:memory_rtl_0
+ 26. Parameter Settings for Inferred Entity Instance: pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0
+ 27. Parameter Settings for Inferred Entity Instance: pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1
+ 28. altsyncram Parameter Settings by Entity Instance
+ 29. Port Connectivity Checks: "interrupt_controller:interrupt_module"
+ 30. Port Connectivity Checks: "pipelined_cpu_core:cpu|alu:alu_unit"
+ 31. Post-Synthesis Netlist Statistics for Top Partition
+ 32. Elapsed Time Per Partition
+ 33. Analysis & Synthesis Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2025  Altera Corporation. All rights reserved.
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, the Altera Quartus Prime License Agreement,
+the Altera IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Altera and sold by Altera or its authorized distributors.  Please
+refer to the Altera Software License Subscription Agreements 
+on the Quartus Prime software download page.
+
+
+
++-----------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                      ;
++---------------------------------+-------------------------------------------------+
+; Analysis & Synthesis Status     ; Successful - Thu Sep 10 17:47:57 2026           ;
+; Quartus Prime Version           ; 25.1std.0 Build 1129 10/21/2025 SC Lite Edition ;
+; Revision Name                   ; mcu_top                                         ;
+; Top-level Entity Name           ; mcu_top                                         ;
+; Family                          ; Cyclone V                                       ;
+; Logic utilization (in ALMs)     ; N/A                                             ;
+; Total registers                 ; 830                                             ;
+; Total pins                      ; 34                                              ;
+; Total virtual pins              ; 0                                               ;
+; Total block memory bits         ; 18,432                                          ;
+; Total DSP Blocks                ; 0                                               ;
+; Total HSSI RX PCSs              ; 0                                               ;
+; Total HSSI PMA RX Deserializers ; 0                                               ;
+; Total HSSI TX PCSs              ; 0                                               ;
+; Total HSSI PMA TX Serializers   ; 0                                               ;
+; Total PLLs                      ; 0                                               ;
+; Total DLLs                      ; 0                                               ;
++---------------------------------+-------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                             ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 5CSEMA5F31C6       ;                    ;
+; Top-level entity name                                                           ; mcu_top            ; mcu_top            ;
+; Family name                                                                     ; Cyclone V          ; Cyclone V          ;
+; Use smart compilation                                                           ; Off                ; Off                ;
+; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                                             ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                                   ; Enable             ; Enable             ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Off                ; Off                ;
+; Extract Verilog State Machines                                                  ; On                 ; On                 ;
+; Extract VHDL State Machines                                                     ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                               ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                         ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; Parallel Synthesis                                                              ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                            ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                          ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                       ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                                  ; Off                ; Off                ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                              ; 70                 ; 70                 ;
+; Auto Carry Chains                                                               ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                             ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Report Connectivity Checks                                                      ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; Power Optimization During Synthesis                                             ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                                 ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                            ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
+; Partial Reconfiguration Bitstream ID                                            ; Off                ; Off                ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 16          ;
+; Maximum allowed            ; 16          ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 16          ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processor 3            ;   0.0%      ;
+;     Processor 4            ;   0.0%      ;
+;     Processor 5            ;   0.0%      ;
+;     Processor 6            ;   0.0%      ;
+;     Processor 7            ;   0.0%      ;
+;     Processor 8            ;   0.0%      ;
+;     Processors 9-16        ;   0.0%      ;
++----------------------------+-------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                            ;
++---------------------------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path                  ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                       ; Library ;
++---------------------------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------+---------+
+; ../design/mcu/data_mem_fpga.sv                    ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/data_mem_fpga.sv                    ;         ;
+; ../testbench/mcu_tb/mcu_integration_quartus_tb.sv ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/testbench/mcu_tb/mcu_integration_quartus_tb.sv ;         ;
+; ../design/pipelined_cpu/reg_file.sv               ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/reg_file.sv               ;         ;
+; ../design/pipelined_cpu/pipelined_cpu_core.sv     ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv     ;         ;
+; ../design/pipelined_cpu/pc.sv                     ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pc.sv                     ;         ;
+; ../design/pipelined_cpu/memory_writeback_reg.sv   ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/memory_writeback_reg.sv   ;         ;
+; ../design/pipelined_cpu/instruction_decoder.sv    ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/instruction_decoder.sv    ;         ;
+; ../design/pipelined_cpu/immediate_gen.sv          ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/immediate_gen.sv          ;         ;
+; ../design/pipelined_cpu/hazard_detection_unit.sv  ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/hazard_detection_unit.sv  ;         ;
+; ../design/pipelined_cpu/fetch_decode_reg.sv       ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/fetch_decode_reg.sv       ;         ;
+; ../design/pipelined_cpu/execute_memory_reg.sv     ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/execute_memory_reg.sv     ;         ;
+; ../design/pipelined_cpu/decode_execute_reg.sv     ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/decode_execute_reg.sv     ;         ;
+; ../design/pipelined_cpu/data_forwarding_unit.sv   ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/data_forwarding_unit.sv   ;         ;
+; ../design/pipelined_cpu/comparator.sv             ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/comparator.sv             ;         ;
+; ../design/pipelined_cpu/alu.sv                    ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/alu.sv                    ;         ;
+; ../design/mcu/uart.sv                             ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/uart.sv                             ;         ;
+; ../design/mcu/timer.sv                            ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/timer.sv                            ;         ;
+; ../design/mcu/spi.sv                              ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/spi.sv                              ;         ;
+; ../design/mcu/memory_connect.sv                   ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/memory_connect.sv                   ;         ;
+; ../design/mcu/mcu_top.sv                          ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv                          ;         ;
+; ../design/mcu/interrupt_control.sv                ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/interrupt_control.sv                ;         ;
+; ../design/mcu/i2c.sv                              ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/i2c.sv                              ;         ;
+; ../design/mcu/gpio.sv                             ; yes             ; User SystemVerilog HDL File  ; C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/gpio.sv                             ;         ;
+; altsyncram.tdf                                    ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altsyncram.tdf              ;         ;
+; stratix_ram_block.inc                             ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/stratix_ram_block.inc       ;         ;
+; lpm_mux.inc                                       ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/lpm_mux.inc                 ;         ;
+; lpm_decode.inc                                    ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/lpm_decode.inc              ;         ;
+; aglobal251.inc                                    ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/aglobal251.inc              ;         ;
+; a_rdenreg.inc                                     ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/a_rdenreg.inc               ;         ;
+; altrom.inc                                        ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altrom.inc                  ;         ;
+; altram.inc                                        ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altram.inc                  ;         ;
+; altdpram.inc                                      ; yes             ; Megafunction                 ; c:/altera_lite/25.1std/quartus/libraries/megafunctions/altdpram.inc                ;         ;
+; db/altsyncram_c6n1.tdf                            ; yes             ; Auto-Generated Megafunction  ; C:/Users/shayh/Documents/RISC-V-MCU/quartus/db/altsyncram_c6n1.tdf                 ;         ;
+; db/altsyncram_6ji1.tdf                            ; yes             ; Auto-Generated Megafunction  ; C:/Users/shayh/Documents/RISC-V-MCU/quartus/db/altsyncram_6ji1.tdf                 ;         ;
++---------------------------------------------------+-----------------+------------------------------+------------------------------------------------------------------------------------+---------+
+
+
++---------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary             ;
++---------------------------------------------+-----------+
+; Resource                                    ; Usage     ;
++---------------------------------------------+-----------+
+; Estimate of Logic utilization (ALMs needed) ; 1274      ;
+;                                             ;           ;
+; Combinational ALUT usage for logic          ; 1849      ;
+;     -- 7 input functions                    ; 46        ;
+;     -- 6 input functions                    ; 620       ;
+;     -- 5 input functions                    ; 409       ;
+;     -- 4 input functions                    ; 244       ;
+;     -- <=3 input functions                  ; 530       ;
+;                                             ;           ;
+; Dedicated logic registers                   ; 830       ;
+;                                             ;           ;
+; I/O pins                                    ; 34        ;
+; Total MLAB memory bits                      ; 0         ;
+; Total block memory bits                     ; 18432     ;
+;                                             ;           ;
+; Total DSP Blocks                            ; 0         ;
+;                                             ;           ;
+; Maximum fan-out node                        ; clk~input ;
+; Maximum fan-out                             ; 926       ;
+; Total fan-out                               ; 12589     ;
+; Average fan-out                             ; 4.42      ;
++---------------------------------------------+-----------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                           ;
++------------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------------------+-----------------------+--------------+
+; Compilation Hierarchy Node                                 ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                              ; Entity Name           ; Library Name ;
++------------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------------------+-----------------------+--------------+
+; |mcu_top                                                   ; 1849 (1)            ; 830 (0)                   ; 18432             ; 0          ; 34   ; 0            ; |mcu_top                                                                                                         ; mcu_top               ; work         ;
+;    |data_mem:data_memory|                                  ; 0 (0)               ; 0 (0)                     ; 16384             ; 0          ; 0    ; 0            ; |mcu_top|data_mem:data_memory                                                                                    ; data_mem              ; work         ;
+;       |altsyncram:memory_rtl_0|                            ; 0 (0)               ; 0 (0)                     ; 16384             ; 0          ; 0    ; 0            ; |mcu_top|data_mem:data_memory|altsyncram:memory_rtl_0                                                            ; altsyncram            ; work         ;
+;          |altsyncram_c6n1:auto_generated|                  ; 0 (0)               ; 0 (0)                     ; 16384             ; 0          ; 0    ; 0            ; |mcu_top|data_mem:data_memory|altsyncram:memory_rtl_0|altsyncram_c6n1:auto_generated                             ; altsyncram_c6n1       ; work         ;
+;    |gpio:gpio_module|                                      ; 2 (2)               ; 16 (16)                   ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|gpio:gpio_module                                                                                        ; gpio                  ; work         ;
+;    |i2c_master:i2c_module|                                 ; 115 (115)           ; 89 (89)                   ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|i2c_master:i2c_module                                                                                   ; i2c_master            ; work         ;
+;    |instruction_mem:instruction_memory|                    ; 58 (58)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|instruction_mem:instruction_memory                                                                      ; instruction_mem       ; work         ;
+;    |interrupt_controller:interrupt_module|                 ; 8 (8)               ; 8 (8)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|interrupt_controller:interrupt_module                                                                   ; interrupt_controller  ; work         ;
+;    |memory_interconnect:memory_interconnect_unit|          ; 66 (66)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|memory_interconnect:memory_interconnect_unit                                                            ; memory_interconnect   ; work         ;
+;    |pipelined_cpu_core:cpu|                                ; 1284 (487)          ; 476 (0)                   ; 2048              ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu                                                                                  ; pipelined_cpu_core    ; work         ;
+;       |alu:alu_unit|                                       ; 483 (483)           ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit                                                                     ; alu                   ; work         ;
+;       |comp:branch_comparator|                             ; 72 (72)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|comp:branch_comparator                                                           ; comp                  ; work         ;
+;       |decode_execute_reg:decode_execute_pipeline_reg|     ; 130 (130)           ; 156 (156)                 ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg                                   ; decode_execute_reg    ; work         ;
+;       |decoder:control_unit|                               ; 12 (12)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|decoder:control_unit                                                             ; decoder               ; work         ;
+;       |execute_memory_reg:execute_memory_pipeline_reg|     ; 0 (0)               ; 105 (105)                 ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|execute_memory_reg:execute_memory_pipeline_reg                                   ; execute_memory_reg    ; work         ;
+;       |fetch_decode_register:fetch_decode_reg|             ; 29 (29)             ; 60 (60)                   ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg                                           ; fetch_decode_register ; work         ;
+;       |forwarding_unit:forward_unit|                       ; 13 (13)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|forwarding_unit:forward_unit                                                     ; forwarding_unit       ; work         ;
+;       |hazard_detection_unit:hazard_unit|                  ; 7 (7)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|hazard_detection_unit:hazard_unit                                                ; hazard_detection_unit ; work         ;
+;       |immediate_gen:immediate_generator|                  ; 3 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|immediate_gen:immediate_generator                                                ; immediate_gen         ; work         ;
+;       |memory_writeback_reg:memory_writeback_pipeline_reg| ; 0 (0)               ; 38 (38)                   ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|memory_writeback_reg:memory_writeback_pipeline_reg                               ; memory_writeback_reg  ; work         ;
+;       |prog_count:program_counter|                         ; 34 (34)             ; 32 (32)                   ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|prog_count:program_counter                                                       ; prog_count            ; work         ;
+;       |reg_file:register_file|                             ; 14 (14)             ; 85 (85)                   ; 2048              ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|reg_file:register_file                                                           ; reg_file              ; work         ;
+;          |altsyncram:registers_rtl_0|                      ; 0 (0)               ; 0 (0)                     ; 1024              ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0                                ; altsyncram            ; work         ;
+;             |altsyncram_6ji1:auto_generated|               ; 0 (0)               ; 0 (0)                     ; 1024              ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0|altsyncram_6ji1:auto_generated ; altsyncram_6ji1       ; work         ;
+;          |altsyncram:registers_rtl_1|                      ; 0 (0)               ; 0 (0)                     ; 1024              ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1                                ; altsyncram            ; work         ;
+;             |altsyncram_6ji1:auto_generated|               ; 0 (0)               ; 0 (0)                     ; 1024              ; 0          ; 0    ; 0            ; |mcu_top|pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1|altsyncram_6ji1:auto_generated ; altsyncram_6ji1       ; work         ;
+;    |spi_master:spi_module|                                 ; 82 (82)             ; 67 (67)                   ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|spi_master:spi_module                                                                                   ; spi_master            ; work         ;
+;    |timer:timer_module|                                    ; 97 (97)             ; 67 (67)                   ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|timer:timer_module                                                                                      ; timer                 ; work         ;
+;    |uart:uart_module|                                      ; 136 (136)           ; 107 (107)                 ; 0                 ; 0          ; 0    ; 0            ; |mcu_top|uart:uart_module                                                                                        ; uart                  ; work         ;
++------------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------------------+-----------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis RAM Summary                                                                                                                                                                                        ;
++--------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+; Name                                                                                                               ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size  ; MIF  ;
++--------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+; data_mem:data_memory|altsyncram:memory_rtl_0|altsyncram_c6n1:auto_generated|ALTSYNCRAM                             ; AUTO ; Simple Dual Port ; 512          ; 32           ; 512          ; 32           ; 16384 ; None ;
+; pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0|altsyncram_6ji1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 32           ; 32           ; 32           ; 32           ; 1024  ; None ;
+; pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1|altsyncram_6ji1:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 32           ; 32           ; 32           ; 32           ; 1024  ; None ;
++--------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
+
+
+Encoding Type:  One-Hot
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |mcu_top|i2c_master:i2c_module|i2c_state                                                                                                                                                                                               ;
++---------------------------+-------------------------+-------------------------+-------------------------+--------------------------+---------------------------+-----------------------+---------------------+--------------------+--------------------+
+; Name                      ; i2c_state.I2C_READ_NACK ; i2c_state.I2C_READ_DATA ; i2c_state.I2C_WRITE_ACK ; i2c_state.I2C_WRITE_DATA ; i2c_state.I2C_ADDRESS_ACK ; i2c_state.I2C_ADDRESS ; i2c_state.I2C_START ; i2c_state.I2C_IDLE ; i2c_state.I2C_STOP ;
++---------------------------+-------------------------+-------------------------+-------------------------+--------------------------+---------------------------+-----------------------+---------------------+--------------------+--------------------+
+; i2c_state.I2C_IDLE        ; 0                       ; 0                       ; 0                       ; 0                        ; 0                         ; 0                     ; 0                   ; 0                  ; 0                  ;
+; i2c_state.I2C_START       ; 0                       ; 0                       ; 0                       ; 0                        ; 0                         ; 0                     ; 1                   ; 1                  ; 0                  ;
+; i2c_state.I2C_ADDRESS     ; 0                       ; 0                       ; 0                       ; 0                        ; 0                         ; 1                     ; 0                   ; 1                  ; 0                  ;
+; i2c_state.I2C_ADDRESS_ACK ; 0                       ; 0                       ; 0                       ; 0                        ; 1                         ; 0                     ; 0                   ; 1                  ; 0                  ;
+; i2c_state.I2C_WRITE_DATA  ; 0                       ; 0                       ; 0                       ; 1                        ; 0                         ; 0                     ; 0                   ; 1                  ; 0                  ;
+; i2c_state.I2C_WRITE_ACK   ; 0                       ; 0                       ; 1                       ; 0                        ; 0                         ; 0                     ; 0                   ; 1                  ; 0                  ;
+; i2c_state.I2C_READ_DATA   ; 0                       ; 1                       ; 0                       ; 0                        ; 0                         ; 0                     ; 0                   ; 1                  ; 0                  ;
+; i2c_state.I2C_READ_NACK   ; 1                       ; 0                       ; 0                       ; 0                        ; 0                         ; 0                     ; 0                   ; 1                  ; 0                  ;
+; i2c_state.I2C_STOP        ; 0                       ; 0                       ; 0                       ; 0                        ; 0                         ; 0                     ; 0                   ; 1                  ; 1                  ;
++---------------------------+-------------------------+-------------------------+-------------------------+--------------------------+---------------------------+-----------------------+---------------------+--------------------+--------------------+
+
+
+Encoding Type:  One-Hot
++---------------------------------------------------------------------------------------------+
+; State Machine - |mcu_top|spi_master:spi_module|spi_state                                    ;
++------------------------+--------------------+----------------------+------------------------+
+; Name                   ; spi_state.SPI_IDLE ; spi_state.SPI_FINISH ; spi_state.SPI_TRANSFER ;
++------------------------+--------------------+----------------------+------------------------+
+; spi_state.SPI_IDLE     ; 0                  ; 0                    ; 0                      ;
+; spi_state.SPI_TRANSFER ; 1                  ; 0                    ; 1                      ;
+; spi_state.SPI_FINISH   ; 1                  ; 1                    ; 0                      ;
++------------------------+--------------------+----------------------+------------------------+
+
+
+Encoding Type:  One-Hot
++------------------------------------------------------------------------------------------------+
+; State Machine - |mcu_top|uart:uart_module|rx_state                                             ;
++-------------------+------------------+------------------+-------------------+------------------+
+; Name              ; rx_state.RX_STOP ; rx_state.RX_DATA ; rx_state.RX_START ; rx_state.RX_IDLE ;
++-------------------+------------------+------------------+-------------------+------------------+
+; rx_state.RX_IDLE  ; 0                ; 0                ; 0                 ; 0                ;
+; rx_state.RX_START ; 0                ; 0                ; 1                 ; 1                ;
+; rx_state.RX_DATA  ; 0                ; 1                ; 0                 ; 1                ;
+; rx_state.RX_STOP  ; 1                ; 0                ; 0                 ; 1                ;
++-------------------+------------------+------------------+-------------------+------------------+
+
+
+Encoding Type:  One-Hot
++------------------------------------------------------------------------------------------------+
+; State Machine - |mcu_top|uart:uart_module|tx_state                                             ;
++-------------------+------------------+------------------+-------------------+------------------+
+; Name              ; tx_state.TX_STOP ; tx_state.TX_DATA ; tx_state.TX_START ; tx_state.TX_IDLE ;
++-------------------+------------------+------------------+-------------------+------------------+
+; tx_state.TX_IDLE  ; 0                ; 0                ; 0                 ; 0                ;
+; tx_state.TX_START ; 0                ; 0                ; 1                 ; 1                ;
+; tx_state.TX_DATA  ; 0                ; 1                ; 0                 ; 1                ;
+; tx_state.TX_STOP  ; 1                ; 0                ; 0                 ; 1                ;
++-------------------+------------------+------------------+-------------------+------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                                                                                            ;
++-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------+
+; Register name                                                                           ; Reason for Removal                                                                                  ;
++-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------+
+; i2c_master:i2c_module|read_operation                                                    ; Merged with i2c_master:i2c_module|address_byte_register[0]                                          ;
+; pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|result_src_out[1] ; Merged with pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|jump_out          ;
+; interrupt_controller:interrupt_module|interrupt_pending[1,4]                            ; Stuck at GND due to stuck port data_in                                                              ;
+; pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out[19]       ; Stuck at GND due to stuck port data_in                                                              ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[10]                ; Stuck at GND due to stuck port data_in                                                              ;
+; pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|rs1_out[4]        ; Stuck at GND due to stuck port data_in                                                              ;
+; i2c_master:i2c_module|i2c_state~10                                                      ; Lost fanout                                                                                         ;
+; i2c_master:i2c_module|i2c_state~11                                                      ; Lost fanout                                                                                         ;
+; i2c_master:i2c_module|i2c_state~12                                                      ; Lost fanout                                                                                         ;
+; uart:uart_module|rx_state~6                                                             ; Lost fanout                                                                                         ;
+; uart:uart_module|rx_state~7                                                             ; Lost fanout                                                                                         ;
+; uart:uart_module|tx_state~6                                                             ; Lost fanout                                                                                         ;
+; uart:uart_module|tx_state~7                                                             ; Lost fanout                                                                                         ;
+; pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[9]  ; Merged with pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[10] ;
+; pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[30] ; Merged with pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[29] ;
+; pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out[1]        ; Merged with pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out[0]        ;
+; pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out[30,31]    ; Merged with pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out[29]       ;
+; Total Number of Removed Registers = 19                                                  ;                                                                                                     ;
++-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                                                                                                      ;
++-----------------------------------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
+; Register name                                                                     ; Reason for Removal        ; Registers Removed due to This Register                                           ;
++-----------------------------------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
+; pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out[19] ; Stuck at GND              ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[10],        ;
+;                                                                                   ; due to stuck port data_in ; pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|rs1_out[4] ;
++-----------------------------------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 830   ;
+; Number of registers using Synchronous Clear  ; 658   ;
+; Number of registers using Synchronous Load   ; 37    ;
+; Number of registers using Asynchronous Clear ; 0     ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 341   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++----------------------------------------------------------------------------------+
+; Registers Packed Into Inferred Megafunctions                                     ;
++---------------------------------------+-----------------------------------+------+
+; Register Name                         ; Megafunction                      ; Type ;
++---------------------------------------+-----------------------------------+------+
+; data_mem:data_memory|read_data[0..31] ; data_mem:data_memory|memory_rtl_0 ; RAM  ;
++---------------------------------------+-----------------------------------+------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------+
+; Registers Added for RAM Pass-Through Logic                                                                                               ;
++--------------------------------------------------------------------------+---------------------------------------------------------------+
+; Register Name                                                            ; RAM Name                                                      ;
++--------------------------------------------------------------------------+---------------------------------------------------------------+
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[0]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[1]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[2]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[3]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[4]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[5]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[6]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[7]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[8]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[9]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[10] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[11] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[12] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[13] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[14] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[15] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[16] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[17] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[18] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[19] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[20] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[21] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[22] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[23] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[24] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[25] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[26] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[27] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[28] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[29] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[30] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[31] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[32] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[33] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[34] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[35] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[36] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[37] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[38] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[39] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[40] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[41] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0_bypass[42] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[0]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[1]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[2]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[3]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[4]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[5]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[6]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[7]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[8]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[9]  ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[10] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[11] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[12] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[13] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[14] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[15] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[16] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[17] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[18] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[19] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[20] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[21] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[22] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[23] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[24] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[25] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[26] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[27] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[28] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[29] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[30] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[31] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[32] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[33] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[34] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[35] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[36] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[37] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[38] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[39] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[40] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[41] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
+; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1_bypass[42] ; pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1 ;
++--------------------------------------------------------------------------+---------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                 ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                       ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------+
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|gpio:gpio_module|output_register[7]                                                     ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|gpio:gpio_module|direction_register[0]                                                  ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|i2c_master:i2c_module|address_byte_register[0]                                          ;
+; 3:1                ; 57 bits   ; 114 LEs       ; 0 LEs                ; 114 LEs                ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|pc_out[9]         ;
+; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |mcu_top|interrupt_controller:interrupt_module|interrupt_enable[2]                               ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |mcu_top|timer:timer_module|interrupt_enable                                                     ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 0 LEs                ; 64 LEs                 ; Yes        ; |mcu_top|timer:timer_module|compare_register[25]                                                 ;
+; 3:1                ; 7 bits    ; 14 LEs        ; 7 LEs                ; 7 LEs                  ; Yes        ; |mcu_top|i2c_master:i2c_module|device_address[6]                                                 ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|i2c_master:i2c_module|rx_data_register[6]                                               ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|spi_master:spi_module|rx_data_register[4]                                               ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|uart:uart_module|rx_data_register[2]                                                    ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|uart:uart_module|tx_data_register[4]                                                    ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|spi_master:spi_module|tx_data_register[7]                                               ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |mcu_top|i2c_master:i2c_module|tx_data_register[4]                                               ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |mcu_top|spi_master:spi_module|bit_counter[0]                                                    ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |mcu_top|uart:uart_module|rx_bit_counter[0]                                                      ;
+; 4:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |mcu_top|uart:uart_module|tx_bit_counter[1]                                                      ;
+; 4:1                ; 6 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[10] ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out[0]        ;
+; 4:1                ; 52 bits   ; 104 LEs       ; 0 LEs                ; 104 LEs                ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out[13]       ;
+; 5:1                ; 32 bits   ; 96 LEs        ; 0 LEs                ; 96 LEs                 ; Yes        ; |mcu_top|i2c_master:i2c_module|clock_counter[22]                                                 ;
+; 5:1                ; 32 bits   ; 96 LEs        ; 0 LEs                ; 96 LEs                 ; Yes        ; |mcu_top|spi_master:spi_module|clock_counter[3]                                                  ;
+; 5:1                ; 32 bits   ; 96 LEs        ; 0 LEs                ; 96 LEs                 ; Yes        ; |mcu_top|uart:uart_module|tx_baud_counter[0]                                                     ;
+; 5:1                ; 30 bits   ; 90 LEs        ; 60 LEs               ; 30 LEs                 ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|prog_count:program_counter|pc[15]                                ;
+; 5:1                ; 5 bits    ; 15 LEs        ; 15 LEs               ; 0 LEs                  ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[24] ;
+; 5:1                ; 32 bits   ; 96 LEs        ; 0 LEs                ; 96 LEs                 ; Yes        ; |mcu_top|timer:timer_module|count_register[11]                                                   ;
+; 6:1                ; 32 bits   ; 128 LEs       ; 64 LEs               ; 64 LEs                 ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|read_reg1_out[13] ;
+; 6:1                ; 32 bits   ; 128 LEs       ; 64 LEs               ; 64 LEs                 ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|read_reg2_out[14] ;
+; 8:1                ; 31 bits   ; 155 LEs       ; 0 LEs                ; 155 LEs                ; Yes        ; |mcu_top|uart:uart_module|rx_baud_counter[28]                                                    ;
+; 8:1                ; 3 bits    ; 15 LEs        ; 6 LEs                ; 9 LEs                  ; Yes        ; |mcu_top|i2c_master:i2c_module|bit_counter[0]                                                    ;
+; 9:1                ; 6 bits    ; 36 LEs        ; 36 LEs               ; 0 LEs                  ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[30] ;
+; 13:1               ; 4 bits    ; 32 LEs        ; 32 LEs               ; 0 LEs                  ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[2]  ;
+; 11:1               ; 7 bits    ; 49 LEs        ; 49 LEs               ; 0 LEs                  ; Yes        ; |mcu_top|pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg|immediate_out[12] ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 64 LEs               ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|forwarded_a_execute[6]                                           ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 64 LEs               ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu_a_execute[22]                                                ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 64 LEs               ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|forwarded_b_execute[30]                                          ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|ShiftLeft0                                          ;
+; 4:1                ; 49 bits   ; 98 LEs        ; 98 LEs               ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|ShiftRight1                                         ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|ShiftRight0                                         ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|ShiftRight1                                         ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|ShiftLeft0                                          ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|ShiftLeft0                                          ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|ShiftLeft0                                          ;
+; 3:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|immediate_gen:immediate_generator|Selector24                     ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|immediate_gen:immediate_generator|Selector24                     ;
+; 4:1                ; 9 bits    ; 18 LEs        ; 18 LEs               ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg|instruction_out           ;
+; 22:1               ; 8 bits    ; 112 LEs       ; 72 LEs               ; 40 LEs                 ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|Mux7                                                ;
+; 21:1               ; 5 bits    ; 70 LEs        ; 40 LEs               ; 30 LEs                 ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|Mux25                                               ;
+; 21:1               ; 3 bits    ; 42 LEs        ; 24 LEs               ; 18 LEs                 ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|Mux17                                               ;
+; 23:1               ; 2 bits    ; 30 LEs        ; 18 LEs               ; 12 LEs                 ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|Mux22                                               ;
+; 12:1               ; 24 bits   ; 192 LEs       ; 192 LEs              ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|writeback_value_memory[9]                                        ;
+; 25:1               ; 3 bits    ; 48 LEs        ; 33 LEs               ; 15 LEs                 ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|Mux1                                                ;
+; 24:1               ; 2 bits    ; 32 LEs        ; 20 LEs               ; 12 LEs                 ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|Mux6                                                ;
+; 24:1               ; 3 bits    ; 48 LEs        ; 30 LEs               ; 18 LEs                 ; No         ; |mcu_top|pipelined_cpu_core:cpu|alu:alu_unit|Mux30                                               ;
+; 10:1               ; 2 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; No         ; |mcu_top|i2c_master:i2c_module|i2c_state                                                         ;
+; 13:1               ; 2 bits    ; 16 LEs        ; 6 LEs                ; 10 LEs                 ; No         ; |mcu_top|i2c_master:i2c_module|i2c_state                                                         ;
+; 19:1               ; 2 bits    ; 24 LEs        ; 24 LEs               ; 0 LEs                  ; No         ; |mcu_top|pipelined_cpu_core:cpu|writeback_value_memory[5]                                        ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------+
+; Source assignments for data_mem:data_memory|altsyncram:memory_rtl_0|altsyncram_c6n1:auto_generated ;
++---------------------------------+--------------------+------+--------------------------------------+
+; Assignment                      ; Value              ; From ; To                                   ;
++---------------------------------+--------------------+------+--------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                    ;
++---------------------------------+--------------------+------+--------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------+
+; Source assignments for pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0|altsyncram_6ji1:auto_generated ;
++---------------------------------+--------------------+------+------------------------------------------------------------------+
+; Assignment                      ; Value              ; From ; To                                                               ;
++---------------------------------+--------------------+------+------------------------------------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                                ;
++---------------------------------+--------------------+------+------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------+
+; Source assignments for pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1|altsyncram_6ji1:auto_generated ;
++---------------------------------+--------------------+------+------------------------------------------------------------------+
+; Assignment                      ; Value              ; From ; To                                                               ;
++---------------------------------+--------------------+------+------------------------------------------------------------------+
+; OPTIMIZE_POWER_DURING_SYNTHESIS ; NORMAL_COMPILATION ; -    ; -                                                                ;
++---------------------------------+--------------------+------+------------------------------------------------------------------+
+
+
++---------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: uart:uart_module ;
++-----------------+----------+----------------------------------+
+; Parameter Name  ; Value    ; Type                             ;
++-----------------+----------+----------------------------------+
+; CLOCK_FREQUENCY ; 50000000 ; Signed Integer                   ;
+; BAUD_RATE       ; 115200   ; Signed Integer                   ;
++-----------------+----------+----------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: spi_master:spi_module ;
++----------------+-------+-------------------------------------------+
+; Parameter Name ; Value ; Type                                      ;
++----------------+-------+-------------------------------------------+
+; CLOCK_DIVIDER  ; 4     ; Signed Integer                            ;
++----------------+-------+-------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: i2c_master:i2c_module ;
++-----------------+----------+---------------------------------------+
+; Parameter Name  ; Value    ; Type                                  ;
++-----------------+----------+---------------------------------------+
+; CLOCK_FREQUENCY ; 50000000 ; Signed Integer                        ;
+; I2C_FREQUENCY   ; 100000   ; Signed Integer                        ;
++-----------------+----------+---------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: data_mem:data_memory|altsyncram:memory_rtl_0 ;
++------------------------------------+----------------------+-----------------------------------+
+; Parameter Name                     ; Value                ; Type                              ;
++------------------------------------+----------------------+-----------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                           ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                        ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                      ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                      ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                    ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                           ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                           ;
+; WIDTH_A                            ; 32                   ; Untyped                           ;
+; WIDTHAD_A                          ; 9                    ; Untyped                           ;
+; NUMWORDS_A                         ; 512                  ; Untyped                           ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                           ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                           ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                           ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                           ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                           ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                           ;
+; WIDTH_B                            ; 32                   ; Untyped                           ;
+; WIDTHAD_B                          ; 9                    ; Untyped                           ;
+; NUMWORDS_B                         ; 512                  ; Untyped                           ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                           ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                           ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                           ;
+; ADDRESS_REG_B                      ; CLOCK0               ; Untyped                           ;
+; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                           ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                           ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                           ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                           ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                           ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                           ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                           ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                           ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Untyped                           ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                           ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                           ;
+; BYTE_SIZE                          ; 8                    ; Untyped                           ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; OLD_DATA             ; Untyped                           ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                           ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                           ;
+; INIT_FILE                          ; UNUSED               ; Untyped                           ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                           ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                           ;
+; CLOCK_ENABLE_INPUT_A               ; NORMAL               ; Untyped                           ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                           ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                           ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                           ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                           ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                           ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                           ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                           ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                           ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                           ;
+; CBXI_PARAMETER                     ; altsyncram_c6n1      ; Untyped                           ;
++------------------------------------+----------------------+-----------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0 ;
++------------------------------------+----------------------+---------------------------------------------------------------+
+; Parameter Name                     ; Value                ; Type                                                          ;
++------------------------------------+----------------------+---------------------------------------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                                                       ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                                                    ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                                                  ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                                                  ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                                                ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                                                       ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                                                       ;
+; WIDTH_A                            ; 32                   ; Untyped                                                       ;
+; WIDTHAD_A                          ; 5                    ; Untyped                                                       ;
+; NUMWORDS_A                         ; 32                   ; Untyped                                                       ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                                                       ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                                                       ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                                                       ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                                                       ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                                                       ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                                                       ;
+; WIDTH_B                            ; 32                   ; Untyped                                                       ;
+; WIDTHAD_B                          ; 5                    ; Untyped                                                       ;
+; NUMWORDS_B                         ; 32                   ; Untyped                                                       ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                                                       ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                                                       ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                                                       ;
+; ADDRESS_REG_B                      ; CLOCK0               ; Untyped                                                       ;
+; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                                                       ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                                                       ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                                                       ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                       ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                                                       ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                                                       ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                       ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                                                       ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Untyped                                                       ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                                                       ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                                                       ;
+; BYTE_SIZE                          ; 8                    ; Untyped                                                       ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                                                       ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                                                       ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                                                       ;
+; INIT_FILE                          ; UNUSED               ; Untyped                                                       ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                                                       ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                                                       ;
+; CLOCK_ENABLE_INPUT_A               ; NORMAL               ; Untyped                                                       ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                                                       ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                                                       ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                                                       ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                                                       ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                                                       ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                                                       ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                                                       ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                                                       ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                                                       ;
+; CBXI_PARAMETER                     ; altsyncram_6ji1      ; Untyped                                                       ;
++------------------------------------+----------------------+---------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1 ;
++------------------------------------+----------------------+---------------------------------------------------------------+
+; Parameter Name                     ; Value                ; Type                                                          ;
++------------------------------------+----------------------+---------------------------------------------------------------+
+; BYTE_SIZE_BLOCK                    ; 8                    ; Untyped                                                       ;
+; AUTO_CARRY_CHAINS                  ; ON                   ; AUTO_CARRY                                                    ;
+; IGNORE_CARRY_BUFFERS               ; OFF                  ; IGNORE_CARRY                                                  ;
+; AUTO_CASCADE_CHAINS                ; ON                   ; AUTO_CASCADE                                                  ;
+; IGNORE_CASCADE_BUFFERS             ; OFF                  ; IGNORE_CASCADE                                                ;
+; WIDTH_BYTEENA                      ; 1                    ; Untyped                                                       ;
+; OPERATION_MODE                     ; DUAL_PORT            ; Untyped                                                       ;
+; WIDTH_A                            ; 32                   ; Untyped                                                       ;
+; WIDTHAD_A                          ; 5                    ; Untyped                                                       ;
+; NUMWORDS_A                         ; 32                   ; Untyped                                                       ;
+; OUTDATA_REG_A                      ; UNREGISTERED         ; Untyped                                                       ;
+; ADDRESS_ACLR_A                     ; NONE                 ; Untyped                                                       ;
+; OUTDATA_ACLR_A                     ; NONE                 ; Untyped                                                       ;
+; WRCONTROL_ACLR_A                   ; NONE                 ; Untyped                                                       ;
+; INDATA_ACLR_A                      ; NONE                 ; Untyped                                                       ;
+; BYTEENA_ACLR_A                     ; NONE                 ; Untyped                                                       ;
+; WIDTH_B                            ; 32                   ; Untyped                                                       ;
+; WIDTHAD_B                          ; 5                    ; Untyped                                                       ;
+; NUMWORDS_B                         ; 32                   ; Untyped                                                       ;
+; INDATA_REG_B                       ; CLOCK1               ; Untyped                                                       ;
+; WRCONTROL_WRADDRESS_REG_B          ; CLOCK1               ; Untyped                                                       ;
+; RDCONTROL_REG_B                    ; CLOCK1               ; Untyped                                                       ;
+; ADDRESS_REG_B                      ; CLOCK0               ; Untyped                                                       ;
+; OUTDATA_REG_B                      ; UNREGISTERED         ; Untyped                                                       ;
+; BYTEENA_REG_B                      ; CLOCK1               ; Untyped                                                       ;
+; INDATA_ACLR_B                      ; NONE                 ; Untyped                                                       ;
+; WRCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                       ;
+; ADDRESS_ACLR_B                     ; NONE                 ; Untyped                                                       ;
+; OUTDATA_ACLR_B                     ; NONE                 ; Untyped                                                       ;
+; RDCONTROL_ACLR_B                   ; NONE                 ; Untyped                                                       ;
+; BYTEENA_ACLR_B                     ; NONE                 ; Untyped                                                       ;
+; WIDTH_BYTEENA_A                    ; 1                    ; Untyped                                                       ;
+; WIDTH_BYTEENA_B                    ; 1                    ; Untyped                                                       ;
+; RAM_BLOCK_TYPE                     ; AUTO                 ; Untyped                                                       ;
+; BYTE_SIZE                          ; 8                    ; Untyped                                                       ;
+; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped                                                       ;
+; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped                                                       ;
+; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped                                                       ;
+; INIT_FILE                          ; UNUSED               ; Untyped                                                       ;
+; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped                                                       ;
+; MAXIMUM_DEPTH                      ; 0                    ; Untyped                                                       ;
+; CLOCK_ENABLE_INPUT_A               ; NORMAL               ; Untyped                                                       ;
+; CLOCK_ENABLE_INPUT_B               ; NORMAL               ; Untyped                                                       ;
+; CLOCK_ENABLE_OUTPUT_A              ; NORMAL               ; Untyped                                                       ;
+; CLOCK_ENABLE_OUTPUT_B              ; NORMAL               ; Untyped                                                       ;
+; CLOCK_ENABLE_CORE_A                ; USE_INPUT_CLKEN      ; Untyped                                                       ;
+; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped                                                       ;
+; ENABLE_ECC                         ; FALSE                ; Untyped                                                       ;
+; ECC_PIPELINE_STAGE_ENABLED         ; FALSE                ; Untyped                                                       ;
+; WIDTH_ECCSTATUS                    ; 3                    ; Untyped                                                       ;
+; DEVICE_FAMILY                      ; Cyclone V            ; Untyped                                                       ;
+; CBXI_PARAMETER                     ; altsyncram_6ji1      ; Untyped                                                       ;
++------------------------------------+----------------------+---------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------------------------+
+; altsyncram Parameter Settings by Entity Instance                                                                     ;
++-------------------------------------------+--------------------------------------------------------------------------+
+; Name                                      ; Value                                                                    ;
++-------------------------------------------+--------------------------------------------------------------------------+
+; Number of entity instances                ; 3                                                                        ;
+; Entity Instance                           ; data_mem:data_memory|altsyncram:memory_rtl_0                             ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                                                ;
+;     -- WIDTH_A                            ; 32                                                                       ;
+;     -- NUMWORDS_A                         ; 512                                                                      ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                                             ;
+;     -- WIDTH_B                            ; 32                                                                       ;
+;     -- NUMWORDS_B                         ; 512                                                                      ;
+;     -- ADDRESS_REG_B                      ; CLOCK0                                                                   ;
+;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                             ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                     ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; OLD_DATA                                                                 ;
+; Entity Instance                           ; pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0 ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                                                ;
+;     -- WIDTH_A                            ; 32                                                                       ;
+;     -- NUMWORDS_A                         ; 32                                                                       ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                                             ;
+;     -- WIDTH_B                            ; 32                                                                       ;
+;     -- NUMWORDS_B                         ; 32                                                                       ;
+;     -- ADDRESS_REG_B                      ; CLOCK0                                                                   ;
+;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                             ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                     ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                                                ;
+; Entity Instance                           ; pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1 ;
+;     -- OPERATION_MODE                     ; DUAL_PORT                                                                ;
+;     -- WIDTH_A                            ; 32                                                                       ;
+;     -- NUMWORDS_A                         ; 32                                                                       ;
+;     -- OUTDATA_REG_A                      ; UNREGISTERED                                                             ;
+;     -- WIDTH_B                            ; 32                                                                       ;
+;     -- NUMWORDS_B                         ; 32                                                                       ;
+;     -- ADDRESS_REG_B                      ; CLOCK0                                                                   ;
+;     -- OUTDATA_REG_B                      ; UNREGISTERED                                                             ;
+;     -- RAM_BLOCK_TYPE                     ; AUTO                                                                     ;
+;     -- READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE                                                                ;
++-------------------------------------------+--------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "interrupt_controller:interrupt_module"                                                        ;
++----------------+--------+----------+-------------------------------------------------------------------------------------+
+; Port           ; Type   ; Severity ; Details                                                                             ;
++----------------+--------+----------+-------------------------------------------------------------------------------------+
+; gpio_interrupt ; Input  ; Info     ; Stuck at GND                                                                        ;
+; uart_interrupt ; Input  ; Info     ; Stuck at GND                                                                        ;
+; cpu_interrupt  ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; interrupt_id   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++----------------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "pipelined_cpu_core:cpu|alu:alu_unit"                                                ;
++------+--------+----------+-------------------------------------------------------------------------------------+
+; Port ; Type   ; Severity ; Details                                                                             ;
++------+--------+----------+-------------------------------------------------------------------------------------+
+; zero ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; arriav_ff             ; 830                         ;
+;     ENA               ; 26                          ;
+;     ENA SCLR          ; 283                         ;
+;     ENA SCLR SLD      ; 32                          ;
+;     SCLR              ; 339                         ;
+;     SCLR SLD          ; 4                           ;
+;     SLD               ; 1                           ;
+;     plain             ; 145                         ;
+; arriav_io_obuf        ; 2                           ;
+; arriav_lcell_comb     ; 1849                        ;
+;     arith             ; 317                         ;
+;         1 data inputs ; 253                         ;
+;         2 data inputs ; 32                          ;
+;         5 data inputs ; 32                          ;
+;     extend            ; 46                          ;
+;         7 data inputs ; 46                          ;
+;     normal            ; 1486                        ;
+;         0 data inputs ; 1                           ;
+;         2 data inputs ; 124                         ;
+;         3 data inputs ; 120                         ;
+;         4 data inputs ; 244                         ;
+;         5 data inputs ; 377                         ;
+;         6 data inputs ; 620                         ;
+; boundary_port         ; 34                          ;
+; stratixv_ram_block    ; 96                          ;
+;                       ;                             ;
+; Max LUT depth         ; 14.60                       ;
+; Average LUT depth     ; 7.56                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:14     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 25.1std.0 Build 1129 10/21/2025 SC Lite Edition
+    Info: Processing started: Thu Sep 10 17:47:32 2026
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off RISC-V-MCU -c mcu_top
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 16 of the 16 processors detected
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/data_mem_fpga.sv
+    Info (12023): Found entity 1: data_mem File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/data_mem_fpga.sv Line: 14
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/testbench/mcu_tb/mcu_integration_quartus_tb.sv
+    Info (12023): Found entity 1: instruction_mem File: C:/Users/shayh/Documents/RISC-V-MCU/testbench/mcu_tb/mcu_integration_quartus_tb.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/reg_file.sv
+    Info (12023): Found entity 1: reg_file File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/reg_file.sv Line: 7
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/pipelined_cpu_core.sv
+    Info (12023): Found entity 1: pipelined_cpu_core File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 6
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/pc.sv
+    Info (12023): Found entity 1: prog_count File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pc.sv Line: 8
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/memory_writeback_reg.sv
+    Info (12023): Found entity 1: memory_writeback_reg File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/memory_writeback_reg.sv Line: 10
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/instruction_decoder.sv
+    Info (12023): Found entity 1: decoder File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/instruction_decoder.sv Line: 31
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/immediate_gen.sv
+    Info (12023): Found entity 1: immediate_gen File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/immediate_gen.sv Line: 8
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/hazard_detection_unit.sv
+    Info (12023): Found entity 1: hazard_detection_unit File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/hazard_detection_unit.sv Line: 9
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/fetch_decode_reg.sv
+    Info (12023): Found entity 1: fetch_decode_register File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/fetch_decode_reg.sv Line: 6
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/execute_memory_reg.sv
+    Info (12023): Found entity 1: execute_memory_reg File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/execute_memory_reg.sv Line: 7
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/decode_execute_reg.sv
+    Info (12023): Found entity 1: decode_execute_reg File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/decode_execute_reg.sv Line: 25
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/data_forwarding_unit.sv
+    Info (12023): Found entity 1: forwarding_unit File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/data_forwarding_unit.sv Line: 12
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/comparator.sv
+    Info (12023): Found entity 1: comp File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/comparator.sv Line: 13
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/pipelined_cpu/alu.sv
+    Info (12023): Found entity 1: alu File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/alu.sv Line: 49
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/uart.sv
+    Info (12023): Found entity 1: uart File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/uart.sv Line: 101
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/timer.sv
+    Info (12023): Found entity 1: timer File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/timer.sv Line: 36
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/spi.sv
+    Info (12023): Found entity 1: spi_master File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/spi.sv Line: 102
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/memory_connect.sv
+    Info (12023): Found entity 1: memory_interconnect File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/memory_connect.sv Line: 12
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/mcu_top.sv
+    Info (12023): Found entity 1: mcu_top File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/interrupt_control.sv
+    Info (12023): Found entity 1: interrupt_controller File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/interrupt_control.sv Line: 79
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/i2c.sv
+    Info (12023): Found entity 1: i2c_master File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/i2c.sv Line: 126
+Info (12021): Found 1 design units, including 1 entities, in source file /users/shayh/documents/risc-v-mcu/design/mcu/gpio.sv
+    Info (12023): Found entity 1: gpio File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/gpio.sv Line: 48
+Info (12127): Elaborating entity "mcu_top" for the top level hierarchy
+Info (12128): Elaborating entity "pipelined_cpu_core" for hierarchy "pipelined_cpu_core:cpu" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 76
+Info (12128): Elaborating entity "prog_count" for hierarchy "pipelined_cpu_core:cpu|prog_count:program_counter" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 128
+Info (12128): Elaborating entity "fetch_decode_register" for hierarchy "pipelined_cpu_core:cpu|fetch_decode_register:fetch_decode_reg" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 147
+Info (12128): Elaborating entity "decoder" for hierarchy "pipelined_cpu_core:cpu|decoder:control_unit" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 176
+Warning (10270): Verilog HDL Case Statement warning at instruction_decoder.sv(76): incomplete case statement has no default case item File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/instruction_decoder.sv Line: 76
+Info (12128): Elaborating entity "immediate_gen" for hierarchy "pipelined_cpu_core:cpu|immediate_gen:immediate_generator" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 182
+Info (12128): Elaborating entity "reg_file" for hierarchy "pipelined_cpu_core:cpu|reg_file:register_file" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 199
+Info (12128): Elaborating entity "decode_execute_reg" for hierarchy "pipelined_cpu_core:cpu|decode_execute_reg:decode_execute_pipeline_reg" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 245
+Info (12128): Elaborating entity "alu" for hierarchy "pipelined_cpu_core:cpu|alu:alu_unit" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 292
+Info (12128): Elaborating entity "comp" for hierarchy "pipelined_cpu_core:cpu|comp:branch_comparator" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 301
+Info (12128): Elaborating entity "execute_memory_reg" for hierarchy "pipelined_cpu_core:cpu|execute_memory_reg:execute_memory_pipeline_reg" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 359
+Info (12128): Elaborating entity "memory_writeback_reg" for hierarchy "pipelined_cpu_core:cpu|memory_writeback_reg:memory_writeback_pipeline_reg" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 401
+Info (12128): Elaborating entity "hazard_detection_unit" for hierarchy "pipelined_cpu_core:cpu|hazard_detection_unit:hazard_unit" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 414
+Info (12128): Elaborating entity "forwarding_unit" for hierarchy "pipelined_cpu_core:cpu|forwarding_unit:forward_unit" File: C:/Users/shayh/Documents/RISC-V-MCU/design/pipelined_cpu/pipelined_cpu_core.sv Line: 432
+Info (12128): Elaborating entity "data_mem" for hierarchy "data_mem:data_memory" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 89
+Info (12128): Elaborating entity "instruction_mem" for hierarchy "instruction_mem:instruction_memory" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 97
+Warning (10030): Net "memory.data_a" at mcu_integration_quartus_tb.sv(14) has no driver or initial value, using a default initial value '0' File: C:/Users/shayh/Documents/RISC-V-MCU/testbench/mcu_tb/mcu_integration_quartus_tb.sv Line: 14
+Warning (10030): Net "memory.waddr_a" at mcu_integration_quartus_tb.sv(14) has no driver or initial value, using a default initial value '0' File: C:/Users/shayh/Documents/RISC-V-MCU/testbench/mcu_tb/mcu_integration_quartus_tb.sv Line: 14
+Warning (10030): Net "memory.we_a" at mcu_integration_quartus_tb.sv(14) has no driver or initial value, using a default initial value '0' File: C:/Users/shayh/Documents/RISC-V-MCU/testbench/mcu_tb/mcu_integration_quartus_tb.sv Line: 14
+Info (12128): Elaborating entity "memory_interconnect" for hierarchy "memory_interconnect:memory_interconnect_unit" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 137
+Info (12128): Elaborating entity "gpio" for hierarchy "gpio:gpio_module" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 153
+Info (12128): Elaborating entity "uart" for hierarchy "uart:uart_module" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 168
+Info (12128): Elaborating entity "spi_master" for hierarchy "spi_master:spi_module" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 187
+Info (12128): Elaborating entity "i2c_master" for hierarchy "i2c_master:i2c_module" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 206
+Info (12128): Elaborating entity "timer" for hierarchy "timer:timer_module" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 221
+Info (12128): Elaborating entity "interrupt_controller" for hierarchy "interrupt_controller:interrupt_module" File: C:/Users/shayh/Documents/RISC-V-MCU/design/mcu/mcu_top.sv Line: 242
+Warning (276020): Inferred RAM node "pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0" from synchronous design logic.  Pass-through logic has been added to match the read-during-write behavior of the original design.
+Warning (276020): Inferred RAM node "pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1" from synchronous design logic.  Pass-through logic has been added to match the read-during-write behavior of the original design.
+Info (19000): Inferred 3 megafunctions from design logic
+    Info (276029): Inferred altsyncram megafunction from the following design logic: "data_mem:data_memory|memory_rtl_0" 
+        Info (286033): Parameter OPERATION_MODE set to DUAL_PORT
+        Info (286033): Parameter WIDTH_A set to 32
+        Info (286033): Parameter WIDTHAD_A set to 9
+        Info (286033): Parameter NUMWORDS_A set to 512
+        Info (286033): Parameter WIDTH_B set to 32
+        Info (286033): Parameter WIDTHAD_B set to 9
+        Info (286033): Parameter NUMWORDS_B set to 512
+        Info (286033): Parameter ADDRESS_ACLR_A set to NONE
+        Info (286033): Parameter OUTDATA_REG_B set to UNREGISTERED
+        Info (286033): Parameter ADDRESS_ACLR_B set to NONE
+        Info (286033): Parameter OUTDATA_ACLR_B set to NONE
+        Info (286033): Parameter ADDRESS_REG_B set to CLOCK0
+        Info (286033): Parameter INDATA_ACLR_A set to NONE
+        Info (286033): Parameter WRCONTROL_ACLR_A set to NONE
+        Info (286033): Parameter READ_DURING_WRITE_MODE_MIXED_PORTS set to OLD_DATA
+    Info (276029): Inferred altsyncram megafunction from the following design logic: "pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_0" 
+        Info (286033): Parameter OPERATION_MODE set to DUAL_PORT
+        Info (286033): Parameter WIDTH_A set to 32
+        Info (286033): Parameter WIDTHAD_A set to 5
+        Info (286033): Parameter NUMWORDS_A set to 32
+        Info (286033): Parameter WIDTH_B set to 32
+        Info (286033): Parameter WIDTHAD_B set to 5
+        Info (286033): Parameter NUMWORDS_B set to 32
+        Info (286033): Parameter ADDRESS_ACLR_A set to NONE
+        Info (286033): Parameter OUTDATA_REG_B set to UNREGISTERED
+        Info (286033): Parameter ADDRESS_ACLR_B set to NONE
+        Info (286033): Parameter OUTDATA_ACLR_B set to NONE
+        Info (286033): Parameter ADDRESS_REG_B set to CLOCK0
+        Info (286033): Parameter INDATA_ACLR_A set to NONE
+        Info (286033): Parameter WRCONTROL_ACLR_A set to NONE
+    Info (276029): Inferred altsyncram megafunction from the following design logic: "pipelined_cpu_core:cpu|reg_file:register_file|registers_rtl_1" 
+        Info (286033): Parameter OPERATION_MODE set to DUAL_PORT
+        Info (286033): Parameter WIDTH_A set to 32
+        Info (286033): Parameter WIDTHAD_A set to 5
+        Info (286033): Parameter NUMWORDS_A set to 32
+        Info (286033): Parameter WIDTH_B set to 32
+        Info (286033): Parameter WIDTHAD_B set to 5
+        Info (286033): Parameter NUMWORDS_B set to 32
+        Info (286033): Parameter ADDRESS_ACLR_A set to NONE
+        Info (286033): Parameter OUTDATA_REG_B set to UNREGISTERED
+        Info (286033): Parameter ADDRESS_ACLR_B set to NONE
+        Info (286033): Parameter OUTDATA_ACLR_B set to NONE
+        Info (286033): Parameter ADDRESS_REG_B set to CLOCK0
+        Info (286033): Parameter INDATA_ACLR_A set to NONE
+        Info (286033): Parameter WRCONTROL_ACLR_A set to NONE
+Info (12130): Elaborated megafunction instantiation "data_mem:data_memory|altsyncram:memory_rtl_0"
+Info (12133): Instantiated megafunction "data_mem:data_memory|altsyncram:memory_rtl_0" with the following parameter:
+    Info (12134): Parameter "OPERATION_MODE" = "DUAL_PORT"
+    Info (12134): Parameter "WIDTH_A" = "32"
+    Info (12134): Parameter "WIDTHAD_A" = "9"
+    Info (12134): Parameter "NUMWORDS_A" = "512"
+    Info (12134): Parameter "WIDTH_B" = "32"
+    Info (12134): Parameter "WIDTHAD_B" = "9"
+    Info (12134): Parameter "NUMWORDS_B" = "512"
+    Info (12134): Parameter "ADDRESS_ACLR_A" = "NONE"
+    Info (12134): Parameter "OUTDATA_REG_B" = "UNREGISTERED"
+    Info (12134): Parameter "ADDRESS_ACLR_B" = "NONE"
+    Info (12134): Parameter "OUTDATA_ACLR_B" = "NONE"
+    Info (12134): Parameter "ADDRESS_REG_B" = "CLOCK0"
+    Info (12134): Parameter "INDATA_ACLR_A" = "NONE"
+    Info (12134): Parameter "WRCONTROL_ACLR_A" = "NONE"
+    Info (12134): Parameter "READ_DURING_WRITE_MODE_MIXED_PORTS" = "OLD_DATA"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_c6n1.tdf
+    Info (12023): Found entity 1: altsyncram_c6n1 File: C:/Users/shayh/Documents/RISC-V-MCU/quartus/db/altsyncram_c6n1.tdf Line: 28
+Info (12130): Elaborated megafunction instantiation "pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0"
+Info (12133): Instantiated megafunction "pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_0" with the following parameter:
+    Info (12134): Parameter "OPERATION_MODE" = "DUAL_PORT"
+    Info (12134): Parameter "WIDTH_A" = "32"
+    Info (12134): Parameter "WIDTHAD_A" = "5"
+    Info (12134): Parameter "NUMWORDS_A" = "32"
+    Info (12134): Parameter "WIDTH_B" = "32"
+    Info (12134): Parameter "WIDTHAD_B" = "5"
+    Info (12134): Parameter "NUMWORDS_B" = "32"
+    Info (12134): Parameter "ADDRESS_ACLR_A" = "NONE"
+    Info (12134): Parameter "OUTDATA_REG_B" = "UNREGISTERED"
+    Info (12134): Parameter "ADDRESS_ACLR_B" = "NONE"
+    Info (12134): Parameter "OUTDATA_ACLR_B" = "NONE"
+    Info (12134): Parameter "ADDRESS_REG_B" = "CLOCK0"
+    Info (12134): Parameter "INDATA_ACLR_A" = "NONE"
+    Info (12134): Parameter "WRCONTROL_ACLR_A" = "NONE"
+Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_6ji1.tdf
+    Info (12023): Found entity 1: altsyncram_6ji1 File: C:/Users/shayh/Documents/RISC-V-MCU/quartus/db/altsyncram_6ji1.tdf Line: 28
+Info (12130): Elaborated megafunction instantiation "pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1"
+Info (12133): Instantiated megafunction "pipelined_cpu_core:cpu|reg_file:register_file|altsyncram:registers_rtl_1" with the following parameter:
+    Info (12134): Parameter "OPERATION_MODE" = "DUAL_PORT"
+    Info (12134): Parameter "WIDTH_A" = "32"
+    Info (12134): Parameter "WIDTHAD_A" = "5"
+    Info (12134): Parameter "NUMWORDS_A" = "32"
+    Info (12134): Parameter "WIDTH_B" = "32"
+    Info (12134): Parameter "WIDTHAD_B" = "5"
+    Info (12134): Parameter "NUMWORDS_B" = "32"
+    Info (12134): Parameter "ADDRESS_ACLR_A" = "NONE"
+    Info (12134): Parameter "OUTDATA_REG_B" = "UNREGISTERED"
+    Info (12134): Parameter "ADDRESS_ACLR_B" = "NONE"
+    Info (12134): Parameter "OUTDATA_ACLR_B" = "NONE"
+    Info (12134): Parameter "ADDRESS_REG_B" = "CLOCK0"
+    Info (12134): Parameter "INDATA_ACLR_A" = "NONE"
+    Info (12134): Parameter "WRCONTROL_ACLR_A" = "NONE"
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 7 registers lost all their fanouts during netlist optimizations.
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 2370 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 12 input pins
+    Info (21059): Implemented 20 output pins
+    Info (21060): Implemented 2 bidirectional pins
+    Info (21061): Implemented 2240 logic cells
+    Info (21064): Implemented 96 RAM segments
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 7 warnings
+    Info: Peak virtual memory: 4935 megabytes
+    Info: Processing ended: Thu Sep 10 17:47:57 2026
+    Info: Elapsed time: 00:00:25
+    Info: Total CPU time (on all processors): 00:00:40
+
+

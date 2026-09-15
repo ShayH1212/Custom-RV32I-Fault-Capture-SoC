@@ -1,0 +1,145 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "gpio_out[0]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_out[1]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_out[2]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_out[3]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_out[4]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_out[5]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_out[6]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_out[7]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_dir[0]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_dir[1]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_dir[2]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_dir[3]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_dir[4]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_dir[5]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_dir[6]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_dir[7]",
+					"strict" : false
+				},
+				{
+					"name" : "uart_tx",
+					"strict" : false
+				},
+				{
+					"name" : "spi_sclk",
+					"strict" : false
+				},
+				{
+					"name" : "spi_mosi",
+					"strict" : false
+				},
+				{
+					"name" : "spi_cs",
+					"strict" : false
+				},
+				{
+					"name" : "i2c_scl",
+					"strict" : false
+				},
+				{
+					"name" : "i2c_sda",
+					"strict" : false
+				},
+				{
+					"name" : "clk",
+					"strict" : false
+				},
+				{
+					"name" : "reset",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_in[0]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_in[4]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_in[3]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_in[2]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_in[1]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_in[6]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_in[7]",
+					"strict" : false
+				},
+				{
+					"name" : "gpio_in[5]",
+					"strict" : false
+				},
+				{
+					"name" : "spi_miso",
+					"strict" : false
+				},
+				{
+					"name" : "uart_rx",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

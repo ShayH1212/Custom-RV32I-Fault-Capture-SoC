@@ -1,0 +1,32 @@
+
+State Machine - |mcu_top|i2c_master:i2c_module|i2c_state
+Name i2c_state.I2C_READ_NACK i2c_state.I2C_READ_DATA i2c_state.I2C_WRITE_ACK i2c_state.I2C_WRITE_DATA i2c_state.I2C_ADDRESS_ACK i2c_state.I2C_ADDRESS i2c_state.I2C_START i2c_state.I2C_IDLE i2c_state.I2C_STOP 
+i2c_state.I2C_IDLE 0 0 0 0 0 0 0 0 0 
+i2c_state.I2C_START 0 0 0 0 0 0 1 1 0 
+i2c_state.I2C_ADDRESS 0 0 0 0 0 1 0 1 0 
+i2c_state.I2C_ADDRESS_ACK 0 0 0 0 1 0 0 1 0 
+i2c_state.I2C_WRITE_DATA 0 0 0 1 0 0 0 1 0 
+i2c_state.I2C_WRITE_ACK 0 0 1 0 0 0 0 1 0 
+i2c_state.I2C_READ_DATA 0 1 0 0 0 0 0 1 0 
+i2c_state.I2C_READ_NACK 1 0 0 0 0 0 0 1 0 
+i2c_state.I2C_STOP 0 0 0 0 0 0 0 1 1 
+
+State Machine - |mcu_top|spi_master:spi_module|spi_state
+Name spi_state.SPI_IDLE spi_state.SPI_FINISH spi_state.SPI_TRANSFER 
+spi_state.SPI_IDLE 0 0 0 
+spi_state.SPI_TRANSFER 1 0 1 
+spi_state.SPI_FINISH 1 1 0 
+
+State Machine - |mcu_top|uart:uart_module|rx_state
+Name rx_state.RX_STOP rx_state.RX_DATA rx_state.RX_START rx_state.RX_IDLE 
+rx_state.RX_IDLE 0 0 0 0 
+rx_state.RX_START 0 0 1 1 
+rx_state.RX_DATA 0 1 0 1 
+rx_state.RX_STOP 1 0 0 1 
+
+State Machine - |mcu_top|uart:uart_module|tx_state
+Name tx_state.TX_STOP tx_state.TX_DATA tx_state.TX_START tx_state.TX_IDLE 
+tx_state.TX_IDLE 0 0 0 0 
+tx_state.TX_START 0 0 1 1 
+tx_state.TX_DATA 0 1 0 1 
+tx_state.TX_STOP 1 0 0 1 

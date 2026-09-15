@@ -1,4 +1,4 @@
-/*|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 SPI Master
 
 This module allows the MCU to communicate with external devices using
@@ -8,9 +8,7 @@ SPI uses four main signals:
 
     SCLK = Serial Clock
     MOSI = Master Out Slave In: Data sent from the MCU to the external device.
-
     MISO = Master In Slave Out: Data sent from the external device back to the MCU.
-
     CS   = Chip Select: Selects which external SPI device the MCU is communicating with.
 
 This module operates as the SPI master. The MCU controls when a transfer
@@ -24,60 +22,35 @@ Design Choices:
    The transfer finishes after all 8 bits have been sent and received.
 
 2. Single SPI Device
-   The module uses one spi_cs output and therefore directly supports one
-   external SPI device.
+   The module uses one spi_cs output aonly supporting one device
 
-3. SPI Mode 0
-   SCLK remains LOW while idle and MISO is sampled when SCLK moves HIGH.
-   This implements SPI Mode 0 operation.
-
-4. MSB First Transmission
+3. MSB First Transmission
    Transmission begins with bit 7 and continues down to bit 0.
    The most significant bit is therefore transferred first.
 
-5. Full Duplex Communication
+4. Full Duplex Communication
    MOSI transmits a bit while MISO is sampled during the same transaction.
    This allows data to be sent and received at the same time.
 
-6. Parameterized SPI Clock Divider
+5. Parameterized SPI Clock Divider
    CLOCK_DIVIDER determines how many MCU clock cycles occur before SCLK changes.
    This allows the SPI clock to run slower than the MCU clock.
 
-7. Three State FSM
+6. Three State FSM
    The SPI controller uses IDLE, TRANSFER, and FINISH states.
    These states control when a transaction starts, transfers data, and completes.
 
-8. Single Byte TX Storage
-   One byte is stored in tx_data_register for the current transaction.
-   There is no transmit FIFO in this design.
-
-9. Single Byte RX Storage
-   Received bits are collected in rx_shift_register and then copied into
-   rx_data_register after the complete byte has been received.
-
-10. Transfers Only Start While Idle
+7. Transfers Only Start While Idle
     A CPU write to SPI_DATA starts a transaction only while the FSM is in SPI_IDLE.
     Writes during an active transfer do not start another transaction.
 
-11. Active LOW Chip Select
+8. Active LOW Chip Select
     spi_cs is pulled LOW when a transfer begins and remains LOW throughout
     the transaction before returning HIGH when the transfer finishes.
 
-12. Transfer Complete Flag
-    transfer_complete becomes HIGH after a complete SPI transaction finishes.
-    The flag remains HIGH until the CPU clears it or begins another transfer.
-
-13. Write 1 to Clear Transfer Complete
-    Writing a 1 to bit 1 of SPI_STATUS clears the transfer_complete flag.
-    This allows the CPU to acknowledge that the completed transfer was handled.
-
-14. Transfer Complete Interrupt
+9. Transfer Complete Interrupt
     spi_interrupt is directly connected to transfer_complete.
     The interrupt therefore remains active while the transfer complete flag is HIGH.
-
-15. CPU Write Starts Transfer
-    Writing a byte to SPI_DATA while the SPI controller is idle immediately
-    stores the byte and begins an SPI transaction.
 
 
 Register Map:
@@ -94,9 +67,7 @@ Register Map:
           Bit 0 = Ready
           Bit 1 = Transfer complete
 
-          Writing a 1 to bit 1 clears the transfer complete flag.
-
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 
 module spi_master #(
@@ -128,7 +99,6 @@ localparam logic [1:0] SPI_IDLE     = 2'b00;
 localparam logic [1:0] SPI_TRANSFER = 2'b01;
 localparam logic [1:0] SPI_FINISH   = 2'b10;
 
-
 // Internal registers
 logic [1:0] spi_state;
 logic [7:0] tx_data_register;
@@ -139,15 +109,15 @@ integer clock_counter;
 logic spi_busy;
 logic transfer_complete;
 
-/*************************************************************
+/***********************************************************
 SPI Interrupt
 
 The interrupt becomes active when a transfer has completed.
-****************************************************************/
+************************************************************/
 
 assign spi_interrupt = transfer_complete;
 
-/********************************************************************************
+/*******************************************************************************
 SPI Master FSM
 
 The SPI controller moves through three main states:
@@ -177,7 +147,7 @@ State transitions:
 
     FINISH -> IDLE : Transfer is complete
 
-********************************************************************************************/
+*********************************************************************************/
 
 
 always_ff @(posedge clk) begin
@@ -227,12 +197,10 @@ always_ff @(posedge clk) begin
 
             spi_sclk <= 1'b0;
             spi_cs <= 1'b1;
-
             spi_busy <= 1'b0;
 
 
-            if (write_enable &&
-                address[3:0] == 4'b0000) begin
+            if (write_enable && address[3:0] == 4'b0000) begin
 
                 tx_data_register <= write_data[7:0];
 
@@ -256,13 +224,11 @@ always_ff @(posedge clk) begin
 
 
 
-        /*
+        /******************************************************
         SPI TRANSFER
 
-        Send and receive one bit at a time.
-
         This implementation sends the most significant bit first.
-        */
+        *********************************************************/
 
         else if (spi_state == SPI_TRANSFER) begin
 
@@ -279,12 +245,11 @@ always_ff @(posedge clk) begin
                 clock_counter <= 0;
 
 
-                /*
+                /***************************************************
                 If SCLK is currently low, move it high.
 
                 In SPI Mode 0, MISO is sampled on the rising edge.
-                */
-
+                **************************************************/
                 if (spi_sclk == 1'b0) begin
 
                     spi_sclk <= 1'b1;
@@ -294,19 +259,17 @@ always_ff @(posedge clk) begin
                 end
 
 
-                /*
+                /*************************************************
                 If SCLK is currently high, move it low.
 
                 After the falling edge, move to the next data bit.
-                */
-
+                **************************************************/
                 else begin
 
                     spi_sclk <= 1'b0;
 
 
                     // Check if the final bit has been transferred
-
                     if (bit_counter == 3'b000) begin
 
                         spi_state <= SPI_FINISH;
@@ -335,11 +298,11 @@ always_ff @(posedge clk) begin
 
 
 
-        /*
+        /**************************************
         SPI FINISH
 
         The full byte has been transferred.
-        */
+        ***************************************/
 
         else if (spi_state == SPI_FINISH) begin
 
@@ -364,14 +327,12 @@ end
 
 
 // CPU reads SPI registers
-
 always_comb begin
 
     read_data = 32'b0;
 
 
     // SPI_DATA
-
     if (address[3:0] == 4'b0000) begin
 
         read_data = {24'b0, rx_data_register};
@@ -380,7 +341,6 @@ always_comb begin
 
 
     // SPI_STATUS
-
     else if (address[3:0] == 4'b0100) begin
 
         read_data[0] = ~spi_busy;

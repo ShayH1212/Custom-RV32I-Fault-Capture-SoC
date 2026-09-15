@@ -18,7 +18,6 @@ UART provides a simple communication link between the MCU and external devices.
 
 Design Choices:
 
-
 1. Fixed Baud Rate
    The baud rate is set using the BAUD_RATE parameter and defaults to 115200.
    The baud rate cannot be changed by the CPU while the MCU is running.
@@ -31,69 +30,37 @@ Design Choices:
    Transmission and reception use separate finite state machines.
    This allows transmitting and receiving to operate independently.
 
-4. UART Idle State is HIGH
-   The TX line remains HIGH while no data is being transmitted.
-   A LOW signal indicates the beginning of the START bit.
-
-5. LSB First Transmission
+4. LSB First Transmission
    Data bit 0 is transmitted first followed by bits 1 through 7.
    This follows standard UART transmission 
 
-6. Single Byte TX Storage
-   One byte is stored in tx_data_register while it is being transmitted.
-   There is no transmit FIFO in this version.
-
-7. TX Writes Only Accepted While Idle
+5. TX Writes Only Accepted While Idle
    The CPU can start a new transmission only while the TX FSM is in TX_IDLE.
-   Writes that occur while a transmission is active are not accepted.
 
-8. Single Byte RX Storage
-   Received bits are first collected in rx_shift_register and then stored
-   in rx_data_register when a complete valid byte has been received
-
-9. Two Flip Flop RX Synchronizer
-   The external RX signal passes through two flip flops rx_unstable and rx_synced before
-   reaching the receiver FSM to reduce metastability risk.
-
-10. Mid Bit START Confirmation
+6. Mid Bit START Confirmation
     After RX first goes LOW, the receiver waits approximately half of one
     baud period and checks that the START bit is still LOW.
 
-11. Single Sample Per Data Bit
-    After the START bit is confirmed, RX is sampled once every baud period.
-    Oversampling is not used in this version.
-
-12. RX Valid Flag
+7. RX Valid Flag
     rx_valid becomes HIGH when a complete valid byte has been received.
     It remains HIGH until the CPU clears it.
 
-13. Write 1 to Clear RX Valid
-    Writing a 1 to bit 1 of UART_STATUS clears rx_valid.
-    Reading UART_DATA does not automatically clear the flag.
 
-
-14. No UART Interrupt
-    This UART does not currently generate an interrupt signal.
-    The CPU determines UART status by reading UART_STATUS.
 
 
 Register Map:
 
     0x0 = UART_DATA
 
-          Writing:
-          Stores the byte that will be transmitted.
+          Writing: Stores the byte that will be transmitted.
 
-          Reading:
-          Returns the most recently received byte.
+          Reading: Returns the most recently received byte.
 
 
     0x4 = UART_STATUS
 
           Bit 0 = TX ready
           Bit 1 = RX data valid
-
-          Writing a 1 to bit 1 clears RX valid.
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
@@ -297,20 +264,17 @@ UART RECEIVER
 The reciever also uses an FSM as defined below 
 
     RX_IDLE
-    Waits for the RX line to go low, which may indicate the beginning of a
-    start bit.
+    Waits for the RX line to go low, which may indicating the beginning of a start bit.
 
     RX_START
-    Waits until the middle of the start bit and checks that the RX line is
-    still low.
+    Waits until the middle of the start bit and checks that the RX line is still low.
 
     RX_DATA
-    Samples the RX line once per baud period and stores each of the 8 received
-    data bits.
+    Samples the RX line once per baud period and stores each of the 8 received data bits.
 
     RX_STOP
-    Checks for a valid stop bit, which should be a 1. If valid, the
-    received byte is stored and marked as ready for the CPU.
+    Checks for a valid stop bit, which should be a 1.
+    If valid, the received byte is stored and marked as ready for the CPU.
 
 State transitions:
 
@@ -324,14 +288,12 @@ State transitions:
 always_ff @(posedge clk) begin
 
     if (reset) begin
-
         rx_state <= RX_IDLE;
         rx_shift_register <= 8'b0;
         rx_data_register <= 8'b0;
         rx_bit_counter <= 3'b0;
         rx_baud_counter <= 0;
         rx_valid <= 1'b0;
-
     end
 
     else begin
@@ -348,8 +310,8 @@ always_ff @(posedge clk) begin
 
         if (rx_state == RX_IDLE) begin
 
-            // UART normally sits at 1.
-            // A 0 indicates the beginning of the start bit.
+            // UART normally sits at 1
+            // A 0 indicates the beginning of the start bit
 
             if (rx_synced == 1'b0) begin
 
@@ -360,16 +322,14 @@ always_ff @(posedge clk) begin
 
         end
 
-
         else if (rx_state == RX_START) begin
 
             // Wait until approximately the middle of the start bit
-
             if (rx_baud_counter == (BAUD_DIVIDER / 2)) begin
 
                 rx_baud_counter <= 0;
 
-                // Confirm that the line is still low
+                // Check that the line is still low
                 if (rx_synced == 1'b0) begin
 
                     rx_bit_counter <= 0;
