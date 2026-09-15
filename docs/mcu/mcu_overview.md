@@ -24,9 +24,9 @@ whether the CPU should be interrupted.
 
 Each interrupt source has:
 
-    1. An interrupt request
-    2. An enable bit
-    3. A pending bit
+1. An interrupt request
+2. An enable bit
+3. A pending bit
 
 The enable register determines which interrupts are allowed to interrupt
 the CPU.
@@ -38,29 +38,28 @@ the cpu_interrupt signal.
 
 Register Map:
 
-    0x0 = INTERRUPT_ENABLE
+0x0 = INTERRUPT_ENABLE
 
-          Bit 0 = Timer interrupt enable
-          Bit 1 = UART interrupt enable
-          Bit 2 = GPIO interrupt enable
-          Bit 3 = SPI interrupt enable
-          Bit 4 = I2C interrupt enable
-
-
-    0x4 = INTERRUPT_PENDING
-
-          Bit 0 = Timer interrupt pending
-          Bit 1 = UART interrupt pending
-          Bit 2 = GPIO interrupt pending
-          Bit 3 = SPI interrupt pending
-          Bit 4 = I2C interrupt pending
+        Bit 0 = Timer interrupt enable
+        Bit 1 = UART interrupt enable
+        Bit 2 = GPIO interrupt enable
+        Bit 3 = SPI interrupt enable
+        Bit 4 = I2C interrupt enable
 
 
-    0x8 = INTERRUPT_CLEAR
+0x4 = INTERRUPT_PENDING
 
-          Writing a 1 to a bit clears the corresponding pending interrupt.
+        Bit 0 = Timer interrupt pending
+        Bit 1 = UART interrupt pending
+        Bit 2 = GPIO interrupt pending
+        Bit 3 = SPI interrupt pending
+        Bit 4 = I2C interrupt pending
 
-*/
+
+0x8 = INTERRUPT_CLEAR
+
+        Writing a 1 to a bit clears the corresponding pending interrupt.
+
 
 
 ### SPI
