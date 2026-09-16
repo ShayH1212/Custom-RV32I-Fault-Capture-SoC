@@ -7,14 +7,11 @@ localparam integer CLOCK_FREQUENCY = 50_000_000;
 
 // UART
 localparam integer UART_BAUD_RATE = 115200;
-
-localparam integer UART_BAUD_DIVIDER =
-    CLOCK_FREQUENCY / UART_BAUD_RATE;
+localparam integer UART_BAUD_DIVIDER = CLOCK_FREQUENCY / UART_BAUD_RATE;
 
 
 // Memory Map
 localparam logic [31:0] RAM_BASE = 32'h0000_0000;
-
 localparam logic [31:0] GPIO_BASE = 32'h1000_0000;
 localparam logic [31:0] UART_BASE = 32'h1000_1000;
 localparam logic [31:0] SPI_BASE = 32'h1000_2000;
@@ -59,7 +56,6 @@ localparam logic [31:0] INTERRUPT_PENDING = INTERRUPT_BASE + 32'h4;
 localparam logic [31:0] INTERRUPT_CLEAR = INTERRUPT_BASE + 32'h8;
 
 
-
 // Clock and reset
 logic clk;
 logic reset;
@@ -97,8 +93,7 @@ logic i2c_slave_sda_drive_low;
 logic i2c_slave_ack_enable;
 logic [7:0] i2c_slave_read_byte;
 
-assign i2c_sda =
-    i2c_slave_sda_drive_low ? 1'b0 : 1'bz;
+assign i2c_sda = i2c_slave_sda_drive_low ? 1'b0 : 1'bz;
 
 
 // Values used by direct bus access
@@ -151,18 +146,11 @@ mcu_top dut (
 always #10 clk = ~clk;
 
 
-
-/*******************************************
+/****************************************************
 Simple I2C Slave
 
-The slave can:
-
-    ACK the device address
-    ACK written data
-    Provide one byte during a read transaction
-
-i2c_slave_ack_enable controls whether ACK is sent.
-**************************************************/
+Provides ACK responses and read data for I2C testing.
+*****************************************************/
 always_comb begin
 
     i2c_slave_sda_drive_low = 1'b0;
@@ -207,15 +195,15 @@ end
 
 
 
-/************************
+/********************
 Check 32 Bit Value
-**************************/
+************************/
 
 task check_32;
 
     input [31:0] actual;
     input [31:0] expected;
-    input [8*80-1:0] test_name;
+    input string test_name;
 
 begin
 
@@ -254,7 +242,7 @@ task check_8;
 
     input [7:0] actual;
     input [7:0] expected;
-    input [8*80-1:0] test_name;
+    input string test_name;
 
 begin
 
@@ -285,7 +273,7 @@ endtask
 
 
 
-/*******************
+/******************
 Check 1 Bit Value
 ********************/
 
@@ -293,7 +281,7 @@ task check_1;
 
     input actual;
     input expected;
-    input [8*80-1:0] test_name;
+    input string test_name;
 
 begin
 
@@ -370,17 +358,15 @@ endtask
 
 
 
-/***********************************************************
+/******************************************************
 Direct MCU Bus Write
 
 The testbench temporarily overrides the CPU data bus.
 
 The transaction still travels through:
 
-    Memory Interconnect
-        ->
-    Selected MCU Device
-**************************************************************/
+    Memory Interconnect -> Selected MCU Device
+********************************************************/
 
 task bus_write;
 
@@ -468,9 +454,9 @@ endtask
 
 
 
-/***********************
+/*********************
 Wait For SPI Transfer
-*************************/
+***********************/
 
 task wait_for_spi;
 
@@ -756,9 +742,9 @@ endtask
 
 
 
-/*****************************
-        MAIN MCU TEST
-*******************************/
+/***************************
+MAIN MCU TEST
+*****************************/
 
 initial begin
 
@@ -801,54 +787,33 @@ initial begin
 
     // lui x1, 0x10000
     // x1 = 0x1000_0000
-    dut.instruction_memory.memory[0] =
-        32'h100000B7;
-
-
-    dut.instruction_memory.memory[1] =
-        32'h00000013;
-
-
-    dut.instruction_memory.memory[2] =
-        32'h00000013;
-
+    dut.instruction_memory.memory[0] = 32'h100000B7;
+    dut.instruction_memory.memory[1] = 32'h00000013;
+    dut.instruction_memory.memory[2] = 32'h00000013;
 
     // addi x2, x0, 255
-    dut.instruction_memory.memory[3] =
-        32'h0FF00113;
-
-
-    dut.instruction_memory.memory[4] =
-        32'h00000013;
-
-
-    dut.instruction_memory.memory[5] =
-        32'h00000013;
-
+    dut.instruction_memory.memory[3] = 32'h0FF00113;
+    dut.instruction_memory.memory[4] = 32'h00000013;
+    dut.instruction_memory.memory[5] = 32'h00000013;
 
     // sw x2, 8(x1)
     // GPIO_DIR = FF
-    dut.instruction_memory.memory[6] =
-        32'h0020A423;
+    dut.instruction_memory.memory[6] = 32'h0020A423;
 
 
     // addi x3, x0, 165
-    dut.instruction_memory.memory[7] =
-        32'h0A500193;
+    dut.instruction_memory.memory[7] = 32'h0A500193;
 
 
-    dut.instruction_memory.memory[8] =
-        32'h00000013;
+    dut.instruction_memory.memory[8] = 32'h00000013;
 
 
-    dut.instruction_memory.memory[9] =
-        32'h00000013;
+    dut.instruction_memory.memory[9] = 32'h00000013;
 
 
     // sw x3, 0(x1)
     // GPIO_OUT = A5
-    dut.instruction_memory.memory[10] =
-        32'h0030A023;
+    dut.instruction_memory.memory[10] = 32'h0030A023;
 
 
     reset_mcu();
@@ -882,10 +847,9 @@ initial begin
 
 
 
-    /***********
-    TEST 2
-    RESET VALUES
-    *************/
+    /********************
+    TEST 2: RESET VALUES
+    ********************/
 
     $display("");
     $display("TEST 2: RESET VALUES");
@@ -941,10 +905,9 @@ initial begin
 
 
 
-    /**********
-    TEST 3
-    DATA MEMORY
-    ***********/
+    /******************
+    TEST 3: DATA MEMORY
+    ******************/
 
     $display("");
     $display("TEST 3: DATA MEMORY");
@@ -971,8 +934,7 @@ initial begin
 
 
     /*********
-    TEST 4
-    GPIO
+    TEST 4: GPIO
     ***********/
 
     $display("");
@@ -1057,10 +1019,9 @@ initial begin
 
 
 
-    /************
-    TEST 6
-    UART TRANSMIT
-    *************/
+    /*******************
+    TEST 6: UART TRANSMIT
+    ********************/
 
     $display("");
     $display("TEST 6: UART TRANSMIT");
@@ -1072,10 +1033,9 @@ initial begin
 
 
 
-    /**********
-    TEST 7
-    UART RECEIVE
-    **************/
+    /*******************
+    TEST 7: UART RECEIVE
+    ********************/
 
     $display("");
     $display("TEST 7: UART RECEIVE");
@@ -1133,10 +1093,9 @@ initial begin
 
 
 
-    /**********
-    TEST 8
-    SPI LOOPBACK
-    ***********/
+    /*******************
+    TEST 8: SPI LOOPBACK
+    ********************/
 
     $display("");
     $display("TEST 8: SPI LOOPBACK");
@@ -1177,10 +1136,7 @@ initial begin
     );
 
 
-    /*
-    SPI interrupt is disabled in the interrupt controller,
-    but should still become pending.
-    */
+    // SPI interrupt is disabled but should still become pending.
 
     repeat (2) @(posedge clk);
 
@@ -1189,7 +1145,6 @@ initial begin
         INTERRUPT_PENDING,
         read_value
     );
-
 
     check_1(
         read_value[2],
@@ -1226,10 +1181,9 @@ initial begin
 
 
 
-    /********
-    TEST 9
-    I2C WRITE
-    *********/
+    /*****************
+    TEST 9: I2C WRITE
+    ****************/
 
     $display("");
     $display("TEST 9: I2C WRITE");
@@ -1302,10 +1256,9 @@ initial begin
 
 
 
-    /***********
-    TEST 10
-    I2C READ
-    *************/
+    /*****************
+    TEST 10: I2C READ
+    *******************/
 
     $display("");
     $display("TEST 10: I2C READ");
@@ -1331,7 +1284,6 @@ initial begin
 
 
     wait_for_i2c();
-
 
     bus_read(
         I2C_DATA,
@@ -1380,10 +1332,9 @@ initial begin
 
 
 
-    /*************
-    TEST 11
-    I2C ACK ERROR
-    ***************/
+    /********************
+    TEST 11: I2C ACK ERROR
+    *********************/
 
     $display("");
     $display("TEST 11: I2C ACK ERROR");
@@ -1444,10 +1395,9 @@ initial begin
 
 
 
-    /**********
-    TEST 12
-    TIMER
-    ************/
+    /***************
+    TEST 12: TIMER
+    *****************/
 
     $display("");
     $display("TEST 12: TIMER");
@@ -1576,14 +1526,12 @@ initial begin
 
 
 
-    /*****************************************************************
+    /*************************************************************
     TEST 13
     INTERRUPT PRIORITY
 
-    SPI and I2C are both enabled and both generate interrupts.
-
-    SPI has higher priority than I2C.
-    *****************************************************************/
+    SPI and I2C are both enabled and both generate interrupts
+    **************************************************************/
 
     $display("");
     $display("TEST 13: INTERRUPT PRIORITY");
@@ -1598,7 +1546,7 @@ initial begin
     );
 
 
-    // Generate SPI interrupt
+    // Start SPI Transfer
     bus_write(
         SPI_DATA,
         32'h00000055
@@ -1608,7 +1556,7 @@ initial begin
     wait_for_spi();
 
 
-    // Generate I2C interrupt
+    // Start I2C Transfer
     bus_write(
         I2C_ADDRESS,
         32'h00000050
@@ -1661,15 +1609,12 @@ initial begin
 
 
 
-    /*****************************************************************
+    /*****************************************
     TEST 14
     NEW INTERRUPT WINS OVER CLEAR
 
     SPI transfer_complete is still HIGH.
-
-    Clearing the SPI pending bit while SPI is still requesting
-    an interrupt should leave the pending bit set.
-    *****************************************************************/
+    *****************************************/
 
     $display("");
     $display("TEST 14: NEW INTERRUPT WINS OVER CLEAR");
@@ -1697,10 +1642,6 @@ initial begin
     );
 
 
-
-    /*
-    Now clear the actual SPI interrupt source.
-    */
 
     bus_write(
         SPI_STATUS,
@@ -1733,10 +1674,6 @@ initial begin
     );
 
 
-    /*
-    I2C is still active so it should now become
-    the highest priority interrupt.
-    */
 
     check_1(
         dut.cpu_interrupt,
@@ -1793,9 +1730,9 @@ initial begin
 
 
 
-    /*****************************************************************
+    /*****************
     FINAL RESULTS
-    *****************************************************************/
+    ******************/
 
     $display("");
     $display("========================================");
