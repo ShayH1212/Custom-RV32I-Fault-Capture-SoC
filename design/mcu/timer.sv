@@ -1,33 +1,11 @@
-/*
+/***********************************************************************************
 Timer
 
-This module provides a hardware timer for the MCU.
+32-bit memory-mapped hardware timer.
 
-The timer uses the MCU clock to increment a counter independently of the CPU.
-The CPU can read the current timer value and configure a compare value that will determine when a timer event should occur.
-
-When the counter reaches the compare value, the timer sets a flag and resets the counter so that another timer can start.
-
-The CPU can enable or disable the timer and can enable or disable timer interrupts.
-
-Register Map:
-
-    0x0 = TIMER_COUNT
-          Current value of the timer counter.
-          The CPU can also write to this register to change or reset the count.
-
-    0x4 = TIMER_COMPARE
-          The value that the timer counts up to.
-
-    0x8 = TIMER_CONTROL
-          Bit 0 = Timer enable
-          Bit 1 = Interrupt enable
-
-    0xC = TIMER_STATUS
-          Bit 0 = Timer event occurred
-
-*/
-
+The counter increments while enabled and resets when it reaches the compare value.
+A timer event can generate an interrupt when enabled.
+************************************************************************************/
 
 module timer (
     input logic clk,
@@ -49,23 +27,11 @@ logic interrupt_enable;
 logic timer_event;
 
 
-// Interrupt is active when an event has occurred and interrupts are enabled
+// Timer interrupt
 assign timer_interrupt = timer_event && interrupt_enable;
 
 
 
-/*
-Timer Counter
-
-When the timer is enabled, the counter increases by one every MCU clock cycle.
-
-When the counter reaches the compare value, the timer:
-
-    1. Resets the counter to 0
-    2. Sets the timer event flag
-
-The timer then begins counting again.
-*/
 
 always_ff @(posedge clk) begin
 
@@ -128,18 +94,13 @@ always_ff @(posedge clk) begin
 
 
 
-        // Increase the timer counter while the timer is enabled
-
+        // Timer counter
         if (timer_enable) begin
 
 
-            // Make sure the compare value is not 0
-
             if (compare_register != 32'b0) begin
 
-
-                // Check whether one full timer period has passed
-
+                // One full timer period passes
                 if (count_register == compare_register - 1) begin
 
                     count_register <= 32'b0;
@@ -165,7 +126,6 @@ end
 
 
 // CPU reads timer registers
-
 always_comb begin
 
     read_data = 32'b0;

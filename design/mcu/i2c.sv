@@ -1,90 +1,11 @@
-/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+/*********************************************************************
 I2C Master
 
-This module allows the MCU to communicate with external devices using I2C (Inter-Integrated Circuit).
+Single master, 7-bit I2C controller.
+Supports single byte read and write transactions.
+An FSM controls START, address, data, ACK/NACK, and STOP sequencing.
 
-I2C uses two main signals:
-
-    SCL = Serial Clock: Controls the timing of I2C communication.
-    SDA = Serial Data: Bidirectional line used to transmit and receive data.
-
-Unlike SPI, multiple I2C devices can share the same SCL and SDA lines.
-Each device is identified using an address.
-
-This module operates as the I2C master. 
-The MCU controls when a transaction begins and the I2C module generates the necessary clock and data signals.
-
-
-Design Choices:
-
-1. Single I2C Master
-   The MCU is the only master allowed to control the I2C bus.
-
-2. MSB First Transmission
-   Address and data bytes are transmitted starting with bit 7 and ending with bit 0.
-   This follows standard I2C transmission ordering.
-
-3. Hardware Generated START and STOP
-   The FSM generates the required START condition before communication and the STOP condition when the transaction is done.
-
-4. ACK and NACK Detection
-   The external device must pull SDA LOW to acknowledge an address or written byte.
-   If SDA remains HIGH, the ack_error flag is set.
-
-5. Separate Read and Write Paths
-   The read/write bit determines whether the FSM sends a data byte or receives one.
-   Both operations use the same address and control interface.
-
-6. FSM Controlled Transactions
-    The controller uses separate states for each section.
-
-7. No Clock Stretching
-    The master does not wait if an external device holds SCL LOW.
-    Clock stretching is not supported.
-
-8. CPU Starts Transactions Through I2C_CONTROL
-    Writing a 1 to bit 0 of I2C_CONTROL begins a transaction.
-    Bit 1 selects whether the transaction is a read or write.
-
-9. Transfer Complete Interrupt
-    i2c_interrupt is connected to transfer_complete and becomes active when
-    an I2C transaction has finished.
-
-
-Register Map:
-
-    0x0 = I2C_DATA
-
-          Writing: Stores the byte that will be transmitted.
-          Reading: Returns the most recently received byte.
-
-
-    0x4 = I2C_ADDRESS
-
-          Bits [6:0] = 7 bit external device address
-
-
-    0x8 = I2C_CONTROL
-
-          Bit 0 = Start transaction
-          Bit 1 = Read operation
-
-                  0 = Write
-                  1 = Read
-
-
-    0xC = I2C_STATUS
-
-          Bit 0 = Ready
-          Bit 1 = Transfer complete
-          Bit 2 = ACK error
-
-          Writing a 1 to bit 1 clears transfer complete.
-          Writing a 1 to bit 2 clears ACK error.
-
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
-
+*********************************************************************/
 module i2c_master #(
 
     parameter integer CLOCK_FREQUENCY = 50_000_000,
@@ -121,23 +42,15 @@ localparam logic [3:0] I2C_STOP = 4'b1000;
 
 // Internal registers
 logic [3:0] i2c_state;
-
 logic [6:0] device_address;
-
 logic [7:0] tx_data_register;
 logic [7:0] rx_data_register;
 logic [7:0] rx_shift_register;
-
 logic [7:0] address_byte_register;
-
 logic read_operation;
-
 logic [2:0] bit_counter;
-
 integer clock_counter;
-
 logic clock_phase;
-
 logic i2c_busy;
 logic transfer_complete;
 logic ack_error;
@@ -156,14 +69,7 @@ assign half_period_done =
     (clock_counter == HALF_PERIOD_COUNT - 1);
 
 
-/*************************************************************
-Open Drain I2C Signals
-
-The MCU can pull each line LOW or release it.
-
-External pull up resistors make the lines HIGH when released.
-**************************************************************/
-
+// Open drain control for the I2C clock and data
 always_comb begin
 
     if (scl_drive_low == 1'b1) begin
@@ -185,93 +91,10 @@ end
 assign i2c_scl = scl_output;
 assign i2c_sda = sda_output;
 
-
-
-/*************************************************************
-I2C Interrupt
-
-The interrupt becomes active when a transaction has completed.
-**************************************************************/
-
 assign i2c_interrupt = transfer_complete;
 
 
 
-/********************************************************************************
-I2C Master FSM
-
-The I2C controller moves through the following states:
-
-    I2C_IDLE:
-
-    Waits for the CPU to request an I2C transaction.
-
-
-    I2C_START:
-
-    Generates the START condition by pulling SDA LOW while SCL is HIGH.
-
-
-    I2C_ADDRESS:
-
-    Sends the 7 bit device address followed by the read/write bit.
-
-
-    I2C_ADDRESS_ACK:
-
-    Releases SDA and checks whether the external device acknowledged the address.
-
-
-    I2C_WRITE_DATA:
-
-    Sends one 8 bit data byte to the external device.
-
-
-    I2C_WRITE_ACK:
-
-    Checks whether the external device acknowledged the transmitted byte.
-
-
-    I2C_READ_DATA:
-
-    Receives one 8 bit data byte from the external device.
-
-
-    I2C_READ_NACK:
-
-    Sends a NACK after receiving the byte to indicate that no additional bytes are required.
-
-
-    I2C_STOP:
-
-    Generates the STOP condition and completes the transaction.
-
-
-State transitions:
-
-    IDLE -> START : CPU requests a transaction
-
-    START -> ADDRESS : START condition has been generated
-
-    ADDRESS -> ADDRESS_ACK : Address and read/write bit have been sent
-
-    ADDRESS_ACK -> WRITE_DATA : Address acknowledged and write operation selected
-
-    ADDRESS_ACK -> READ_DATA : Address acknowledged and read operation selected
-
-    ADDRESS_ACK -> STOP : Address was not acknowledged
-
-    WRITE_DATA -> WRITE_ACK : All 8 data bits have been sent
-
-    WRITE_ACK -> STOP : Data acknowledgment has been checked
-
-    READ_DATA -> READ_NACK : All 8 data bits have been received
-
-    READ_NACK -> STOP : NACK has been sent
-
-    STOP -> IDLE : Transaction is complete
-
-********************************************************************************/
 
 
 always_ff @(posedge clk) begin
@@ -281,24 +104,16 @@ always_ff @(posedge clk) begin
         i2c_state <= I2C_IDLE;
 
         device_address <= 7'b0;
-
         tx_data_register <= 8'b0;
         rx_data_register <= 8'b0;
         rx_shift_register <= 8'b0;
-
         address_byte_register <= 8'b0;
-
         read_operation <= 1'b0;
-
         bit_counter <= 3'b0;
-
         clock_counter <= 0;
         clock_phase <= 1'b0;
-
         i2c_busy <= 1'b0;
-
         transfer_complete <= 1'b0;
-
         ack_error <= 1'b0;
 
         scl_drive_low <= 1'b0;
@@ -310,15 +125,8 @@ always_ff @(posedge clk) begin
     else begin
 
 
-        /*************************************************************
-        CPU stores the byte that will be transmitted.
-
-        Data can only be changed while the I2C controller is idle.
-        **************************************************************/
-
-        if (write_enable &&
-            address[3:0] == 4'b0000 &&
-            i2c_state == I2C_IDLE) begin
+        // TX data register
+        if (write_enable && address[3:0] == 4'b0000 && i2c_state == I2C_IDLE) begin
 
             tx_data_register <= write_data[7:0];
 
@@ -326,13 +134,8 @@ always_ff @(posedge clk) begin
 
 
 
-        /*************************************************************
-        CPU stores the 7 bit address of the external I2C device.
-        **************************************************************/
-
-        if (write_enable &&
-            address[3:0] == 4'b0100 &&
-            i2c_state == I2C_IDLE) begin
+        // Device address register
+        if (write_enable && address[3:0] == 4'b0100 && i2c_state == I2C_IDLE) begin
 
             device_address <= write_data[6:0];
 
@@ -340,12 +143,8 @@ always_ff @(posedge clk) begin
 
 
 
-        /*************************************************************
-        CPU clears status flags by writing a 1 to the corresponding bit.
-        **************************************************************/
-
-        if (write_enable &&
-            address[3:0] == 4'b1100) begin
+        // Write 1 to clear status flags
+        if (write_enable && address[3:0] == 4'b1100) begin
 
             if (write_data[1] == 1'b1) begin
 
@@ -364,13 +163,7 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
-        I2C IDLE
-
-        Both I2C lines are released.
-
-        Wait for the CPU to request a transaction.
-        ******************************************************************/
+        // I2C IDLE
 
         if (i2c_state == I2C_IDLE) begin
 
@@ -414,11 +207,7 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
-        I2C START
-
-        Generate a START condition by pulling SDA LOW while SCL is HIGH.
-        ******************************************************************/
+       // I2C START
 
         else if (i2c_state == I2C_START) begin
 
@@ -452,13 +241,8 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
-        I2C ADDRESS
 
-        Send the 7 bit address followed by the read/write bit.
-
-        The address byte is transmitted MSB first.
-        ******************************************************************/
+        // I2C ADDRESS
 
         else if (i2c_state == I2C_ADDRESS) begin
 
@@ -534,11 +318,8 @@ always_ff @(posedge clk) begin
 
 
 
-        /*************************************************************************
-        I2C ADDRESS ACK
 
-        Release SDA and check whether the selected device acknowledged the address.
-        ************************************************************************/
+        // I2C ADDRESS ACK
 
         else if (i2c_state == I2C_ADDRESS_ACK) begin
 
@@ -553,7 +334,6 @@ always_ff @(posedge clk) begin
                 if (clock_phase == 1'b0) begin
 
                     // Raise SCL
-
                     scl_drive_low <= 1'b0;
 
                     clock_phase <= 1'b1;
@@ -564,7 +344,6 @@ always_ff @(posedge clk) begin
                 else begin
 
                     // Check ACK while SCL is HIGH
-
                     if (i2c_sda != 1'b0) begin
 
                         ack_error <= 1'b1;
@@ -578,7 +357,6 @@ always_ff @(posedge clk) begin
 
 
                     // Address was not acknowledged
-
                     if (i2c_sda != 1'b0) begin
 
                         i2c_state <= I2C_STOP;
@@ -587,7 +365,6 @@ always_ff @(posedge clk) begin
 
 
                     // Address was acknowledged
-
                     else begin
 
                         bit_counter <= 3'b111;
@@ -625,13 +402,7 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
-        I2C WRITE DATA
-
-        Send the byte stored in tx_data_register.
-
-        Data is transmitted MSB first.
-        ******************************************************************/
+        // I2C WRITE DATA
 
         else if (i2c_state == I2C_WRITE_DATA) begin
 
@@ -702,12 +473,8 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
-        I2C WRITE ACK
 
-        Release SDA and check whether the external device acknowledged
-        the transmitted data byte.
-        ******************************************************************/
+        // I2C WRITE ACK
 
         else if (i2c_state == I2C_WRITE_ACK) begin
 
@@ -758,13 +525,7 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
-        I2C READ DATA
-
-        Release SDA so that the external device can transmit the data byte.
-
-        SDA is sampled while SCL is HIGH.
-        ******************************************************************/
+        // I2C READ DATA
 
         else if (i2c_state == I2C_READ_DATA) begin
 
@@ -824,13 +585,9 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
-        I2C READ NACK
 
-        Release SDA during the ninth clock to send a NACK.
+        // I2C READ NACK
 
-        This tells the external device that no additional bytes are required.
-        ******************************************************************/
 
         else if (i2c_state == I2C_READ_NACK) begin
 
@@ -876,16 +633,7 @@ always_ff @(posedge clk) begin
 
 
 
-        /*****************************************************************
-        I2C STOP
-
-        Generate a STOP condition.
-
-        SDA begins LOW.
-
-        SCL is released HIGH and SDA is then released HIGH while SCL
-        remains HIGH.
-        ******************************************************************/
+        // I2C STOP
 
         else if (i2c_state == I2C_STOP) begin
 
@@ -900,9 +648,7 @@ always_ff @(posedge clk) begin
                 if (clock_phase == 1'b0) begin
 
                     // Raise SCL while SDA remains LOW
-
                     scl_drive_low <= 1'b0;
-
                     clock_phase <= 1'b1;
 
                 end
@@ -911,17 +657,11 @@ always_ff @(posedge clk) begin
                 else begin
 
                     // Release SDA while SCL is HIGH
-
                     sda_drive_low <= 1'b0;
-
                     scl_drive_low <= 1'b0;
-
                     clock_phase <= 1'b0;
-
                     i2c_busy <= 1'b0;
-
                     transfer_complete <= 1'b1;
-
                     i2c_state <= I2C_IDLE;
 
                 end
@@ -951,7 +691,6 @@ always_comb begin
 
 
     // I2C_DATA
-
     if (address[3:0] == 4'b0000) begin
 
         read_data = {24'b0, rx_data_register};
@@ -960,7 +699,6 @@ always_comb begin
 
 
     // I2C_ADDRESS
-
     else if (address[3:0] == 4'b0100) begin
 
         read_data[6:0] = device_address;
@@ -969,7 +707,6 @@ always_comb begin
 
 
     // I2C_CONTROL
-
     else if (address[3:0] == 4'b1000) begin
 
         read_data[1] = read_operation;
@@ -978,7 +715,6 @@ always_comb begin
 
 
     // I2C_STATUS
-
     else if (address[3:0] == 4'b1100) begin
 
         read_data[0] = ~i2c_busy;

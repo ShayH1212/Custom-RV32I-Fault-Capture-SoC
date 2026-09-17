@@ -1,50 +1,13 @@
-/*
+/******************************************************
+GPIO
 
-GPIO (Genaral Purpose Input Output)
+8-bit memory-mapped general-purpose I/O.
 
-This module provides a "general purpose" digital input and output pins for the MCU.
-
-It allows the CPU to configure pins as either inputs or outputs, write values
-to output pins, and read the current values present on input pins.
-
-The GPIO is controlled through memory mapped regs.
-
-GPIO is used for simple digital signals that do not require a dedicated
-communication protocol such as SPI, I2C, or UART. These pins can be used for
-things such as LEDs, buttons, reset signals, enable signals, fault signals, or
-other basic digital inputs and outputs.
-
-The direction reg description
-
-For this design:
-
+Each pin can be configured as an input or output.
+The direction register uses:
     1 = Output
     0 = Input
-
-For example:
-
-    direction_register = 8'b00000101
-
-    GPIO 0 = Output
-    GPIO 1 = Input
-    GPIO 2 = Output
-    GPIO 3 = Input
-    GPIO 4 = Input
-    GPIO 5 = Input
-    GPIO 6 = Input
-    GPIO 7 = Input
-
-
-The CPU can change the direction of the GPIO pins by writing a new value to
-the GPIO_DIR reg.
-
-The direction register is necessary because a GPIO pin can either drive a
-digital value out of the MCU or receive a digital value from an external
-device. The hardware therefore needs to know which direction the signal is
-supposed to travel.
-
-*/
-
+******************************************************/
 module gpio (
 
     input logic clk,
@@ -66,10 +29,9 @@ logic [7:0] output_register;
 logic [7:0] direction_register;
 
 
-// Connect internal registers to GPIO outputs
+// GPIO outputs
 assign gpio_out = output_register;
 assign gpio_dir = direction_register;
-
 
 // Write registers
 always_ff @(posedge clk) begin
@@ -117,5 +79,4 @@ always_comb begin
     end
 
 end
-
 endmodule
