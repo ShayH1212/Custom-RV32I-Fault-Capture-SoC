@@ -1,3 +1,12 @@
+/*******************************************************************
+This module is the Digital Comparator
+
+This takes in 1 bit from 4 different signals in 
+parallel and compares them to 15 fault codes
+
+Each fault code can be individually enabled. A fault is raised
+when the digital input matches any enabled fault code.
+*******************************************************************/
 module digital_compare #(
     parameter DATA_WIDTH = 4
 )(
