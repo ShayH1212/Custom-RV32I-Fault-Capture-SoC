@@ -6,7 +6,8 @@ This assigns faults to a specific timestamp.
 module fault_capture #(
     parameter DATA_WIDTH = 64,
     parameter BUFFER_DEPTH = 64,
-    parameter TIMESTAMP_WIDTH = 32
+    parameter TIMESTAMP_WIDTH = 32,
+    parameter ADDRESS_WIDTH = $clog2(BUFFER_DEPTH)
 )(
     input logic clk,
     input logic reset,
@@ -27,19 +28,23 @@ module fault_capture #(
     input logic [3:0] digital_input,
     input logic serial_input_0,
     input logic serial_input_1,
+    input logic [ADDRESS_WIDTH-1:0] read_address,
 
     output logic fault_triggered,
     output logic capture_complete,
-    output logic [TIMESTAMP_WIDTH-1:0] fault_timestamp  
+    output logic [TIMESTAMP_WIDTH-1:0] fault_timestamp  ,
+    output logic [DATA_WIDTH-1:0] read_data
 );
 
-localparam ADDRESS_WIDTH = $clog2(BUFFER_DEPTH);
+
 localparam COUNT_WIDTH = $clog2(BUFFER_DEPTH / 2);
 logic [COUNT_WIDTH-1:0] post_fault_count;
 logic [DATA_WIDTH-1:0] capture_memory [0:BUFFER_DEPTH-1]; //Stores all captured samples
 logic [DATA_WIDTH-1:0] sample_data;
 logic [ADDRESS_WIDTH-1:0] buffer_index; // Which memory location to write to next
+logic [ADDRESS_WIDTH-1:0] physical_read_address; // Makes the oldest sample seen by the CPU appaer to be 0
 logic any_fault;
+
 
 
 assign any_fault = adc_0_fault_above ||
@@ -132,6 +137,11 @@ always_ff @(posedge clk) begin
 
     end
 
+end
+
+always_comb begin
+    physical_read_address = buffer_index + read_address;
+    read_data = capture_memory[physical_read_address];
 end
 
 endmodule
