@@ -9,6 +9,7 @@ The MCU is now being integrated into a fault data capture SoC designed for embed
 The SoC sits next to an MCU on a PCB and passively records data while waiting for a fault to occur.
 The SoC detects this fault and wakes up the CPU to process the recorded behaviour of the PCB in the time surrounding the fault.
 
+<img width="3789" height="4383" alt="Fault Capture SoC High Level Block Diagram" src="https://github.com/user-attachments/assets/d248d160-2101-424d-858b-250924a150fe" />
 
 
 ## Current Status
